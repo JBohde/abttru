@@ -12,7 +12,7 @@ module.exports = function (app) {
 
 
     app.post("/profile", function (req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         var userName = req.body.patient_name;
         var userPassWord = req.body.password;
 
@@ -22,7 +22,7 @@ module.exports = function (app) {
                 password: userPassWord
             },
         }).then(patient => {
-            console.log(patient);
+            // console.log(patient);
             if (patient.length == 0) {
                 res.redirect('/');
             }
@@ -37,7 +37,7 @@ module.exports = function (app) {
     });
 
     app.get("/profile", function (req, res) {
-        console.log("--------------------------");
+        // console.log("--------------------------");
         // console.log(req);
 
         db.patient.belongsTo(db.healthStats, { foreignKey: 'id', constraints: false });
@@ -46,7 +46,7 @@ module.exports = function (app) {
             where: { patient_name: req.session.user_name },
             include: [{ model: db.healthStats }, { model: db.savedRecipes }], // load all healthStats 
         }).then(patient => {
-            console.log(patient.map(x => x.dataValues));
+            // console.log(patient.map(x => x.dataValues));
             // console.log(patient.map(x => x.healthStat.dataValues))
             // console.log(patient.map(x => x.savedRecipe.dataValues))
             // console.log(patient);
@@ -55,12 +55,12 @@ module.exports = function (app) {
             // console.log(hbsPatient);
             res.render("user-info", hbsPatient);
         }).catch(function (error) {
-            console.log(error);
+            // console.log(error);
         });;
     });
 
     app.post("/profile/save", function (req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         // Save a recipe with the data available to us in req.body
         db.savedRecipes.create({
             recipe: req.body.save_recipe,
@@ -72,9 +72,9 @@ module.exports = function (app) {
 
     app.put("/profile/fave", function (req, res) {
         // Save a recipe with the data available to us in req.body
-        console.log(req.body);
-        console.log(req.body.id);
-        console.log("------------------------");
+        // console.log(req.body);
+        // console.log(req.body.id);
+        // console.log("------------------------");
 
         db.savedRecipes.update({
             favorite: false
@@ -92,7 +92,7 @@ module.exports = function (app) {
                             recipe: req.body.recipe
                         }
                     }).then(function (savedRecipe) {
-                        console.log(savedRecipe);
+                        // console.log(savedRecipe);
 
                     });
             });
@@ -100,7 +100,7 @@ module.exports = function (app) {
 
     // ******* DOCTOR ROUTES ******* //
     app.post("/doctor", function (req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         var doctorName = req.body.doctor_name;
         var password = req.body.password;
 
@@ -111,7 +111,7 @@ module.exports = function (app) {
             }
         }).then(function (response) {
             var doctorObj = response;
-            console.log(doctorObj.length);
+            // console.log(doctorObj.length);
             if (doctorObj.length == 0) {
                 res.redirect('/');
             }
@@ -140,7 +140,7 @@ module.exports = function (app) {
         db.patient.findAll({
         }).then(patient => {
             hbsObj = { patients: patient.map(x => x.dataValues) };
-            console.log(hbsObj);
+            // console.log(hbsObj);
             res.render("patient", hbsObj);
         });
     });
@@ -150,7 +150,7 @@ module.exports = function (app) {
         db.patient.belongsTo(db.savedRecipes, { foreignKey: 'id', constraints: false });
         db.patient.findAll({
             where: { user_name: "JohnDoe" },
-            include: [{ model: db.healthStats }, { model: db.savedRecipes }], // load all healthStats 
+            include: [{ model: db.healthStats }, { model: db.savedRecipes }], // load all healthStats
         }).then(patient => {
             let hbsPatient = { patients: patient.map(x => x.dataValues) };
             res.render("patient", hbsPatient);
@@ -164,18 +164,18 @@ module.exports = function (app) {
         const errors = req.validationErrors();
 
         if (errors) {
-            console.log(`errors: ${JSON.stringify(errors)}`);
+            // console.log(`errors: ${JSON.stringify(errors)}`);
             res.render('patient', { errors: errors });
         } else {
 
             const patientName = req.body.patient_name;
-            console.log('-------------------------------------------');
-            console.log(req.body);
+            // console.log('-------------------------------------------');
+            // console.log(req.body);
 
             // Create an patient with the data available to us in req.body
             db.patient.belongsTo(db.healthStats, { foreignKey: 'id', constraints: false });
-            console.log("Patient Data:");
-            console.log(JSON.stringify(req.body, null, 2));
+            // console.log("Patient Data:");
+            // console.log(JSON.stringify(req.body, null, 2));
             db.patient.create({
                 patient_name: req.body.patient_name,
                 user_name: 'default_username',
@@ -194,7 +194,7 @@ module.exports = function (app) {
     });
 
     app.delete("/api/patient/:id", function (req, res) {
-        console.log(req.params.id);
+        // console.log(req.params.id);
         db.patient.destroy({
             where: {
                 id: req.params.id

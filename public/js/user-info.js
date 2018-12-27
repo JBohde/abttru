@@ -134,10 +134,10 @@ $(".search").on('click', function (event) {
         console.log($(`#item-active`).hasClass("active"));
 
         $(".fave-this").on('click', function (event) {
-            console.log("favorited");
+            // console.log("favorited");
             uri = event.currentTarget.id;
-            console.log(uri);
-            console.log(this_id);
+            // console.log(uri);
+            // console.log(this_id);
             var id = this_id;
             var newFavorite = $(this).data("true");
             // var newFavoriteState = { favorite: newFavorite }
@@ -157,16 +157,16 @@ $(".search").on('click', function (event) {
                     recipe: uri
                 }
             }).done(function (response) {
-                console.log("This is your new favorite!");
+                // console.log("This is your new favorite!");
 
             });
         });
 
         $(".save-this").on('click', function (event) {
-            console.log('saved');
+            // console.log('saved');
             uri = event.currentTarget.id;
-            console.log(uri);
-            console.log(this_id);
+            // console.log(uri);
+            // console.log(this_id);
             var id = this_id;
             var itsFaved = "<h2>" + "Your reciped has been saved!" + "</h2>";
             if (isModalShowing) return;
@@ -182,7 +182,7 @@ $(".search").on('click', function (event) {
                     id: id
                 }
             }).done(function (response) {
-                console.log(response);
+                // console.log(response);
 
             });
         });
@@ -212,7 +212,7 @@ $(".right").on('click', function (event) {
 });
 
 $(".left").on('click', function (event) {
-    console.log('right clicked modafoca!');
+    // console.log('right clicked modafoca!');
     nextSlide--;
     if (nextSlide < 0) {
         nextSlide = 4;

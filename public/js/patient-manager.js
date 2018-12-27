@@ -2,9 +2,9 @@ $(document).ready(function () {
 
     $(".delete-patient").on('click', function (event) {
         event.preventDefault();
-        console.log(event.target);
+        // console.log(event.target);
         var target = $(event.target);
-        console.log(target.attr("data-patient-id"));
+        // console.log(target.attr("data-patient-id"));
         // Send the POST request.
         $.ajax("/api/patient/" + target.attr("data-patient-id"), {
             type: "DELETE",
