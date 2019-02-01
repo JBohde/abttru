@@ -28,7 +28,7 @@
                     <th>Allergies/Restrictions</th>
                     <th></th>
                 </tr>
-                {{#each patients}} {{> patients/patient-block}} {{/each}}
+                {{#each patients}} {{> doctors/patient-block}} {{/each}}
             </table>
         </div>
     </div>
@@ -47,8 +47,8 @@
         {{/if}}
     </div>
 </div>
-<div class="col-md-3"></div>
-<div class="col-md-6 panel panel-default" style="background: rgba(44, 62, 79, 0.2); padding:10px" id="doctor-panel">
+{{!-- <div class="col-md-3"></div> --}}
+<div class="col-md-12 panel panel-default" style="background: rgba(44, 62, 79, 0.2); padding:10px" id="doctor-panel">
     <br>
     <h2>ADD A PATIENT</h2>
     <form id="patient-input" method="post" action="/api/patient">

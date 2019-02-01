@@ -1,4 +1,8 @@
-	{{recipe_name}}
-	<button class="change-favorite" data-id="{{id}}" data-favorite="{{favorite}}">
-		{{#if devoured}}Make Favorite{{else}}Make Again{{/if}}
-	</button>
+	{{#each recipes}}
+	  <div class="saved-recipes">
+			<a href="{{this.recipe}}" target="_blank"><img  class="img-responsive recipe" src="{{this.recipe_img}}"></a>
+			<p class="rec-name">{{this.recipe_name}}</p>
+			<button class="change-favorite" data-id="{{this.id}}" value={{this.recipe}} data-toggle="modal" data-target="#login-modal" data-favorite="{{this.favorite}}">{{#if favorite}}My Favorite{{else}}Make Favorite{{/if}}</button>
+	  	<button class="delete-recipe" data-id="{{this.id}}" value={{this.recipe_uri}} data-toggle="modal" data-target="#login-modal">DELETE RECIPE</button>
+		</div>
+	{{/each}}

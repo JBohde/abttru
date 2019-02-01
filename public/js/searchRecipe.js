@@ -41,26 +41,6 @@ $(document).ready(function () {
     });
 });
 
-//     $(document).on('click', ".patient-login", function (event) {
-//         event.preventDefault();
-//     console.log("click");
-//     alert("click")
-//     var userName = $("#inputUsername").val();
-//     var passWord = $("#inputPassword").val();
-//     console.log(userName);
-//     console.log(passWord);
-
-//         $.ajax({
-//             url: "/profile",
-//             method: "GET",
-//             body: {
-//                 user_name: userName,
-//                 password: passWord
-//             }
-//         }).done();
-//     });
-// //  });
-
 function createSlider(response) {
     // we create indicators - we will target this 
     // in the for loop with <li> items
@@ -73,11 +53,10 @@ function createSlider(response) {
     });
 
 
-    // let activeCaption = $("<h3>").text(response.hits[0].recipe.label);
-
     var activeCaption = $(`<a>`);
     activeCaption.attr({
         "href": response.hits[0].recipe.url,
+        "target": "_blank",
         /*        "class": "btn btn-info", */
         "role": "button"
 
@@ -85,53 +64,14 @@ function createSlider(response) {
     activeCaption.text(response.hits[0].recipe.label);
     activeCaption.css("color", "black");
 
-    var saveLink = response.hits[0].recipe.uri;
-
-
-    // // make function
-    // var addFavBttn = $("<a>");
-    // addFavBttn.addClass("btn btn default fav-this");
-    // addFavBttn.attr({
-    //     "id": saveLink,
-    //     "class": "btn btn-info",
-    //     "role": "button"
-    // });
-    // addFavBttn.text("Fave This!");
-
-
-    // // make function
-    // var addSaveBttn = $("<a>");
-    // addSaveBttn.addClass("btn btn default save-this");
-    // addSaveBttn.attr({
-    //     "id": saveLink,
-    //     "class": "btn btn-info",
-    //     "role": "button"
-    // });
-    // addSaveBttn.text("Save This!");
-
-
-
     // let activeImg = $("<img src = 'response.hits[0].recipe.image' alt = 'recipe'>");
     itemActive.append(activeCaption);
     itemActive.append(activeImg);
 
-    // itemActive.append(addSaveBttn);
-
-    // itemActive.append(addFavBttn);
-
-
-
     $('.carousel').carousel("pause");
-
     $("#panel-slider").show();
 
-
-    console.log(response.hits[0].recipe.image);
-    console.log(response.hits[1].recipe.image);
-    // start of plotly code
     id = 1;
-
-    // createPlots(responseObject, 0);
 
     // populate our slider with text content
 
@@ -153,41 +93,15 @@ function createSlider(response) {
         var itemCaption = $(`<a>`);
         itemCaption.attr({
             "href": response.hits[i].recipe.url,
+            "target": "_blank",
             /* "class": "btn btn-info", */
             "role": "button"
         });
         itemCaption.text(response.hits[i].recipe.label);
         itemCaption.css("color", "black");
 
-        // var saveLink = response.hits[i].recipe.uri;
-
-        // // make function
-        // var addFavBttn = $("<a>");
-        // // addFavBttn.addClass("btn btn default fav-this");
-        // addFavBttn.attr({
-        //     "id": saveLink,
-        //     "class": "btn btn-info fav-this",
-        //     "role": "button"
-        // });
-        // addFavBttn.text("Fave This!");
-
-
-        // // make function
-        // var addSaveBttn = $("<a>");
-        // // addSaveBttn.addClass("btn btn default save-this");
-        // addSaveBttn.attr({
-        //     "id": saveLink,
-        //     "class": "btn btn-info save-this",
-        //     "role": "button"
-        // });
-        // addSaveBttn.text("Save This!");
-
         itemDiv.append(itemCaption);
         itemDiv.append(itemImg);
-
-        // itemDiv.append(addSaveBttn);
-
-        // itemDiv.append(addFavBttn);
 
         $("#item-list").append(itemDiv);
 

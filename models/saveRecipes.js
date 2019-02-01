@@ -8,7 +8,16 @@ module.exports = function (sequelize, DataTypes) {
         patient_id: {
             type: DataTypes.INTEGER,
         },
+        recipe_name: {
+            type: DataTypes.STRING,
+        },
+        recipe_img: {
+            type: DataTypes.STRING,
+        },
         recipe: {
+            type: DataTypes.STRING,
+        },
+        recipe_uri: {
             type: DataTypes.STRING,
         },
         favorite: {
