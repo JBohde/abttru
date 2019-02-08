@@ -11,9 +11,6 @@ $(document).ready(function () {
         // risk_factor = $("#risk-factor").val().toLowerCase().trim();
         diet_option = $("#diet-factor").val().toLowerCase().trim();
         diet_restriction = $("#diet-restriction").val().toLowerCase().trim();
-        // console.log(risk_factor);
-        console.log(diet_option);
-        console.log(diet_restriction);
         $.ajax({
             url: `https://api.edamam.com/search?q=${userQ}&app_id=76461587&app_key=b829a690de0595f2fa5b7cb02db4cd99&from=0&to=5&diet=${diet_option}&health=${diet_restriction}`,
             method: "GET"
@@ -42,7 +39,7 @@ $(document).ready(function () {
 });
 
 function createSlider(response) {
-    // we create indicators - we will target this 
+    // we create indicators - we will target this
     // in the for loop with <li> items
     let itemActive = $("#item-active");
 
@@ -76,8 +73,6 @@ function createSlider(response) {
     // populate our slider with text content
 
     for (let i = 1; i < response.hits.length; i++) {
-        console.log(response.hits[i])
-
         let itemDiv = $("<div>").attr({
             class: "item",
             "data-id": i

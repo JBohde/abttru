@@ -26,24 +26,24 @@ $(".search").on('click', function (event) {
 
         for (let i = 0; i < response.hits.length; i++) {
 
-            function makeButton(i,name){
+            function makeButton(i, save, fave){
                 button = $("<button>");
                 button.attr({
-                    "id": response.hits[i].recipe.label,
+                    "name": response.hits[i].recipe.label,
                     "src": response.hits[i].recipe.image,
                     "value": response.hits[i].recipe.url,
                     "uri": response.hits[i].recipe.uri,
-                    "class": "btn btn-info " + name,
+                    "class": "btn btn-info " + save,
                     "data-toggle": "modal",
                     "data-target": "#login-modal",
                     "role": "button"
                 });
-               button.text(name + " This!");
-                // if(i < 1) {
-                //     itemActive.append(button)
-                // } else {
-                //     itemDiv.append(button)
-                // }
+               button.text(save + " This!");
+                if(i < 1) {
+                    itemActive.append(button)
+                } else {
+                    itemDiv.append(button)
+                }
             }
 
             let itemActive = $("#item-active");
@@ -72,15 +72,13 @@ $(".search").on('click', function (event) {
             makeButton(i, "Fave");
 
             if(i < 1) {
-                itemActive.append(caption)
-                .append(image)
+                itemActive.append(caption, image)
                 makeButton(i, "Save");
                 makeButton(i, "Fave");
                 continue;
             }
 
-            itemDiv.append(caption)
-            .append(image)
+            itemDiv.append(caption, image)
             makeButton(i, "Save");
             makeButton(i, "Fave");
 
@@ -93,11 +91,13 @@ $(".search").on('click', function (event) {
 
         }
 
-        $(".save").on('click', function (event) {
-            name = event.currentTarget.id;
-            src = event.currentTarget.getAttribute('src');
-            recipe = event.currentTarget.getAttribute('value');
-            uri = event.currentTarget.getAttribute('uri');
+        $(".save").on('click', function (e) {
+            const {name, src, value, uri} = e.currentTarget
+            // name = e.currentTarget.name;
+            // src = e.currentTarget.getAttribute('src');
+            // recipe = e.currentTarget.getAttribute('value');
+            // uri = e.currentTarget.getAttribute('uri');
+            console.log(name, src, value, uri);
             let id = this_id;
             let itsFaved = "<h2>" + "Your reciped has been saved!" + "</h2>";
             $(".modal-body").append(itsFaved);
@@ -108,11 +108,11 @@ $(".search").on('click', function (event) {
                     id: id,
                     recipe_name: name,
                     recipe_img: src,
-                    recipe: recipe,
+                    recipe: value,
                     recipe_uri: uri
                 }
             }).then(function (response) {
-                console.log(response);
+                // console.log(response);
             });
         });
 
@@ -134,7 +134,7 @@ $(".search").on('click', function (event) {
                     recipe: recipe,
                 }
             }).then(function (response) {
-                console.log(response);
+                // console.log(response);
             });
         });
     });
@@ -193,24 +193,20 @@ $(".close").on("click", function () {
 });
 
 $(".right").on('click', function (event) {
-    // console.log('right clicked modafoca!');
     nextSlide++;
     if (nextSlide > 4) {
         nextSlide = 0;
         createPlots(responseObject, nextSlide);
     }
-    // console.log(nextSlide);
     createPlots(responseObject, nextSlide);
 });
 
 $(".left").on('click', function (event) {
-    // console.log('right clicked modafoca!');
     nextSlide--;
     if (nextSlide < 0) {
         nextSlide = 4;
         createPlots(responseObject, nextSlide);
     }
-    // console.log(nextSlide);
     createPlots(responseObject, nextSlide);
 });
 
@@ -500,7 +496,7 @@ function createPlots(response, i) {
       height: 600,
       width: 600
     };
-    
+
     var layoutThree = {
         paper_bgcolor: 'transparent',
         plot_bgcolor: 'transparent',
