@@ -1,150 +1,174 @@
-html {     
-    position: relative;
-    height: auto;
-    min-height: 100% !important;
+html {
+  position: relative;
+  height: auto;
+  min-height: 100% !important;
 }
 
-
 body {
-    background-image: url("test.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    /* display: block;
-    overflow: auto; */
-    position: relative;
-    height: auto;
-    min-height: 100% !important;
+  background-image: url('test.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  height: auto;
+  min-height: 100% !important;
 }
 
 table {
-    font-family: arial, sans-serif;
-    font-size: 20px;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-    border-spacing: 0;
-    width: 100%;
+  font-family: arial, sans-serif;
+  font-size: 20px;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  border-spacing: 0;
+  width: 100%;
 }
 
-td, th {
-    font-weight: bolder;
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-    border: 1px solid #ddd;
+td,
+th {
+  font-weight: bolder;
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ddd;
 }
 
-td{
-   color: white;
+td {
+  color: white;
 }
 
 a {
-    /* color:rgba(44, 62, 79, 0.2); */
-    color: whitesmoke;
+  color: whitesmoke;
 }
-
-/* tr:nth-child(even) {
-    background-color: #dddddd;
-} */
 
 .dropdown-select {
-    padding: 5px 5px 0px 20px;
-    /* padding-bottom: 19.5px; */
+  padding: 5px 5px 0px 20px;
+  /* padding-bottom: 19.5px; */
 }
 .navbar-right {
-    padding: 5px 20px 5px 20px
+  padding: 5px 20px 5px 20px;
 }
 
-
 #brand-logo {
-    height: 61px;
-    width: 120px;
+  height: 61px;
+  width: 120px;
 }
 
 .container-fluid {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 .panel-default {
-    font-size: 20px;
-    background: rgba(44, 62, 79, 0.2);
-    padding: 0;
-
+  font-size: 20px;
+  background: rgba(44, 62, 79, 0.2);
+  padding: 0;
 }
+
+/* #tester-1,
+#tester-2,
+#tester-3,
+#tester-4 {
+  width: 400px;
+  height: 300px;
+} */
 
 /* .ploty {
-   height: 750px;
-    width: 750px; 
+  height: 750px;
+  width: 750px;
 }
 
- .svg-container {
-    background: rgba(44, 62, 79, 0.2);
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-    font-weight: bolder;
-    font-size: 20px;
-
- } */
-
- /* .svg-container {
-     width: 100% !important;
-     height: auto !important;
- } */
-
-
-
-#doctor-panel {
-    padding: 5;
+.svg-container {
+  background: rgba(44, 62, 79, 0.2);
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  font-weight: bolder;
+  font-size: 20px;
 }
+
+.svg-container {
+  width: 100% !important;
+  height: auto !important;
+} */
+
+/* #doctor-panel {
+  padding: 5;
+} */
 
 .patient-form {
-    display: none;
+  display: none;
 }
 
 .doctor-form {
-    display: none;
+  display: none;
 }
 
 .please-login {
-    margin: 10px 0px 10px 0px;
-    padding: 10px;
+  margin: 10px 0px 10px 0px;
+  padding: 10px;
 }
 
 #copyright {
-    color: whitesmoke;
-    text-align: right;
-
+  color: whitesmoke;
+  text-align: right;
 }
 
 #footer-logo {
-    float: right;
-    height: 61px;
-    width: 120px;
+  float: right;
+  height: 61px;
+  width: 120px;
 }
 
 .footer-place {
-    padding-right: 0;
+  padding-right: 0;
 }
 
 .patient-container {
-    padding-bottom: 80px;
+  padding-bottom: 80px;
 }
 
-.recipe {
-    width: 100px;
-    height: 100px;
+.save,
+.fave {
+  width: 50%;
 }
 
-.recipe,
-.rec-name {
-    float: left;
+.fave,
+.change-favorite {
+  background-color: #749541;
+  color: white;
 }
 
-.saved-recipes {
-    width: 100%;
-    height: 100px;
-    margin-bottom: 25px;
+.recipe-card {
+  margin-bottom: 15px;
+}
+
+.recipe-img {
+  max-width: 150px;
+}
+
+.recipe-name {
+  text-align: center;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.saved-recipe {
+  width: 100%;
+  height: auto;
+}
+
+.get-recipe,
+.change-favorite,
+.delete-recipe {
+  margin: 2px;
+  width: 100%;
 }
 
 .bottom {
-    margin-bottom:100px;
+  margin-bottom: 100px;
 }
+
+/* @media screen and (max-width: 400px) {
+  .plot-container {
+    height: 275px;
+  }
+} */

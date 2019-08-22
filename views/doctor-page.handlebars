@@ -1,140 +1,147 @@
 <nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <a href="/home">
-                    <img src="/css/A Better You.png" id="brand-logo">
-                </a>
-            </div>
-        </div>
-        <!-- /.navbar-collapse -->
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <a href="/home">
+          <img src="/css/ABetterYou.png" id="brand-logo">
+        </a>
+      </div>
     </div>
-    <!-- /.container-fluid -->
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container-fluid -->
 </nav>
-<div class="container">
-    <div class="row">
+{{!-- <div class="container"> --}}
+<div class="row">
+</div>
+{{#if errors}} {{#each errors}} {{this.msg}} {{/each}} {{/if}}
+<h1>PATIENT LIST</h1>
+<div class="row">
+  <div class="col-xs-1 col-sm-1 col-md-2"></div>
+  <div class="col-xs-10 col-sm-10 col-md-8 panel panel-default patient-info">
+    <table style="width:100%">
+      <tr>
+        <th>Patient Name</th>
+        <th>Risk Factor</th>
+        <th>Diet Recommendation</th>
+        <th>Allergies/Restrictions</th>
+        <th></th>
+      </tr>
+      {{#each patients}} {{> doctors/patient-block}} {{/each}}
+    </table>
+  </div>
+  <div class="col-xs-1 col-sm-1 col-md-2"></div>
+</div>
+
+{{!-- </div> --}}
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8 panel panel-default error-info">
+    {{#if errors}} {{#each errors}} {{> errors/error-block}} {{/each}} {{/if}}
+    {{#if errors}}
+    <div class="alert alert-danger">
+      {{#each errors}} {{> errors/error-block}} {{/each}}
     </div>
-    {{!-- {{#if errors}} {{#each errors}} {{this.msg}} {{/each}} {{/if}} --}}
-    <h1>PATIENT LIST</h1>
-    <div class="row">
-        <div class="col-md-12 panel panel-default patient-info">
-            <table style="width:100%">
-                <tr>
-                    <th>Patient Name</th>
-                    <th>Risk Factor</th>
-                    <th>Diet Recommendation</th>
-                    <th>Allergies/Restrictions</th>
-                    <th></th>
-                </tr>
-                {{#each patients}} {{> doctors/patient-block}} {{/each}}
-            </table>
-        </div>
-    </div>
+    <form action="/doctor/form" method="get">
+      <input type="submit" class="alert alert-danger" value="RETURN TO FORM">
+    </form>
+    {{/if}}
+  </div>
+  <div class="col-md-2"></div>
 </div>
 <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 panel panel-default error-info">
-        {{!-- {{#if errors}} {{#each errors}} {{> errors/error-block}} {{/each}} {{/if}} --}}
-        {{#if errors}}
-            <div class="alert alert-danger">
-                {{#each errors}} {{> errors/error-block}} {{/each}}
-            </div>
-            <form action="/doctor/form" method="get">
-                <input type="submit" class="alert alert-danger" value="RETURN TO FORM">
-            </form>
-        {{/if}}
-    </div>
-</div>
-{{!-- <div class="col-md-3"></div> --}}
-<div class="col-md-12 panel panel-default" style="background: rgba(44, 62, 79, 0.2); padding:10px" id="doctor-panel">
+  <div class="col-xs-1 col-sm-1 col-md-2"></div>
+  <div class="col-xs-10 col-sm-10 col-md-8 panel panel-default" style="background: rgba(44, 62, 79, 0.2); padding:10px"
+    id="doctor-panel">
     <br>
     <h2>ADD A PATIENT</h2>
     <form id="patient-input" method="post" action="/api/patient">
-        <div class="form-group">
-            <label for="patient-name">Patient Name:</label>
-            <input placeholder="Name" type="text" class="form-control" id="patient-name" name="patient_name">
-            <br>
-            <label for="patient-password">Patient Password:</label>
-            <input placeholder="Password" type="text" class="form-control" id="patient-password" name="password">
-            <br>
-            <label for="risk_factor" name="risk_factor">Risk Factor:</label>
-            <select class="form-control form-control-lg" id="risk_factor" name="risk_factor">
-                <option class="risk-option">Healthy</option>
-                {{!--
+      <div class="form-group">
+        <label for="patient-name">Patient Name:</label>
+        <input placeholder="Name" type="text" class="form-control" id="patient-name" name="patient_name">
+        <br>
+        <label for="patient-password">Patient Password:</label>
+        <input placeholder="Password" type="text" class="form-control" id="patient-password" name="password">
+        <br>
+        <label for="risk_factor" name="risk_factor">Risk Factor:</label>
+        <select class="form-control form-control-lg" id="risk_factor" name="risk_factor">
+          <option class="risk-option">Healthy</option>
+          {{!--
                 <option class="risk-option">High Blood Pressure</option> --}}
-                <option class="risk-option">High Cholesterol</option>
-                <option class="risk-option">Diabetes</option>
-                <option class="risk-option">Obesity</option>
-                {{!--
+          <option class="risk-option">High Cholesterol</option>
+          <option class="risk-option">Diabetes</option>
+          <option class="risk-option">Obesity</option>
+          {{!--
                 <option class="risk-option">Malnourishment</option> --}}
-            </select>
-            <br>
-            <label for="diet-recommendation">Diet Recommendation:</label>
-            <select class="form-control form-control-lg" id="diet_recommendation" name="diet_recommendation">
-                <option class="diet-option">Balanced</option>
-                {{!--
+        </select>
+        <br>
+        <label for="diet-recommendation">Diet Recommendation:</label>
+        <select class="form-control form-control-lg" id="diet_recommendation" name="diet_recommendation">
+          <option class="diet-option">Balanced</option>
+          {{!--
                 <option class="diet-option">High-Fiber</option> --}}
-                <option class="diet-option">High-Protein</option>
-                <option class="diet-option">Low-Carb</option>
-                <option class="diet-option">Low-Fat</option>
-                {{!--
+          <option class="diet-option">High-Protein</option>
+          <option class="diet-option">Low-Carb</option>
+          <option class="diet-option">Low-Fat</option>
+          {{!--
                 <option class="diet-option">Low-Sodium</option> --}}
-            </select>
-            <br>
-            <label for="diet-restriction">Diet Restriction:</label>
-            <select class="form-control form-control-lg" id="diet-restriction" name="diet_restriction">
-                {{!--
+        </select>
+        <br>
+        <label for="diet-restriction">Diet Restriction:</label>
+        <select class="form-control form-control-lg" id="diet-restriction" name="diet_restriction">
+          {{!--
                 <option class="restrict-option">Crustacean-Free</option> --}}
-                {{!--
+          {{!--
                 <option class="restrict-option">Dairy-Free</option> --}}{{!--
                 <option class="restrict-option">Kosher</option> --}}
-                {{!--
+          {{!--
                 <option class="restrict-option">Gluten-Free</option>
                 <option class="restrict-option">Low-Sugar</option>
                 <option class="restrict-option">Paleo</option> --}}
-                <option class="restrict-option">Peanut-free</option>
-                {{!--
+          <option class="restrict-option">Peanut-free</option>
+          {{!--
                 <option class="restrict-option">Pescatarian</option> --}}
-                <option class="restrict-option">Vegan</option>
-                <option class="restrict-option">Vegetarian</option>
-                <option class="restrict-option">Sugar-conscious</option>
-                <option class="restrict-option">Alcohol-free</option>
-            </select>
-            <br>
-            <input type="submit" class="btn btn-primary" value="Add Patient">
-        </div>
+          <option class="restrict-option">Vegan</option>
+          <option class="restrict-option">Vegetarian</option>
+          <option class="restrict-option">Sugar-conscious</option>
+          <option class="restrict-option">Alcohol-free</option>
+        </select>
+        <br>
+        <input type="submit" class="btn btn-primary" value="Add Patient">
+      </div>
     </form>
-</div>
-{{!--
+  </div>
+  <div class='col-xs-1 col-sm-1 col-md-2'></div>
+  {{!--
 <div class="col-md-6 panel panel-default error-info">
     {{#if errors}} {{#each errors}} {{> errors/error-block}} {{/each}} {{/if}}
 </div> --}}
 </div>
 <div class="row">
-    <div class="col-md-12 col-lg-12">
-        <div class="patient-container">
-        </div>
+  <div class="col-md-12 col-lg-12">
+    <div class="patient-container">
     </div>
+  </div>
 </div>
 </div>
 <footer id="footer">
-    <nav class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container-fluid footer-place">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-footer">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-footer">
-                    <a href="/home">
-                        <img src="/css/A Better You.png" id="footer-logo">
-                    </a>
-                </div>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <!-- /.navbar-collapse -->
+  <nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid footer-place">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-footer">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-footer">
+          <a href="/home">
+            <img src="/css/ABetterYou.png" id="footer-logo">
+          </a>
         </div>
-        <!-- /.container-fluid -->
-    </nav>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+  </nav>
 </footer>
 <script src="/js/patient-manager.js" type="text/javascript"></script>
