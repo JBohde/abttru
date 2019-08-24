@@ -47,19 +47,10 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs-0 col-sm-0 col-md-1 col-lg-1"></div>
-    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-      <h1>RECIPE BOX</h1>
-      <div class="patient-info">
-        {{> recipes/recipe-block}}
-      </div>
-    </div>
-    <div class="col-xs-0 col-sm-0 col-md-1 col-lg-1"></div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" id="recipe-area">
-      <div class="panel panel-default" style="display:none" id="panel-slider">
+  <div class="row recipe-area" style='display:none'>
+    <div class="col-xs-0 col-sm-2 col-md-2 col-lg-2"></div>
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+      <div id="panel-slider" class="panel panel-default">
         <div class="panel-body">
           <!-- Where the carousel goes -->
           <div id="sliders" class="slide carousel" data-ride="carousel"
@@ -78,8 +69,7 @@
             </div>
             <!-- Carosel Controls -->
             <div id="controls">
-              <a class="left" href="#sliders" data-slide="prev"
-                title="Previous
+              <a class="left" href="#sliders" data-slide="prev" title="Previous
                 Slide">
                 <span class="glyphicon glyphicon-chevron-left"></span>
               </a>
@@ -94,23 +84,29 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-      <div id="tester"></div>
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 plotlyjs-container">
+      <div class='buttons-wrapper'>
+        <button id="macros" class="btn btn-default btn-sm plot-btn">MACROS</button>
+        <button id="fats" class="btn btn-default btn-sm plot-btn">FATS</button>
+        <button id="minerals" class="btn btn-default btn-sm plot-btn">MINERALS</button>
+        <button id="vitamins" class="btn btn-default btn-sm plot-btn">VITAMINS</button>
+      </div>
+      <div id="macros-container" class="donut-container-active"></div>
+      <div id="fats-container" class="donut-container"></div>
+      <div id="minerals-container" class="donut-container"></div>
+      <div id="vitamins-container" class="donut-container"></div>
     </div>
+    <div class="col-xs-0 col-sm-2 col-md-2 col-lg-2"></div>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-      <div id="tester-1" class="plot-container"></div>
+    <div class="col-xs-0 col-sm-0 col-md-1 col-lg-1"></div>
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+      <h1>RECIPE BOX</h1>
+      <div class="patient-info">
+        {{> recipes/recipe-block}}
+      </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-      <div id="tester-2" class="plot-container"></div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-      <div id="tester-3" class="plot-container"></div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-      <div id="tester-4" class="plot-container"></div>
-    </div>
+    <div class="col-xs-0 col-sm-0 col-md-1 col-lg-1"></div>
   </div>
 </div>
 <!-- Modal -->
@@ -119,7 +115,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <img src="css/ABetterYou.png" id="brand-logo">
+        <img src="/css/ABetterYou.png" id="brand-logo">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h2 class="modal-title">
           A BETTER YOU
@@ -152,6 +148,11 @@
       <!-- /.container-fluid -->
     </nav>
   </footer>
+  {{#each scripts}}
+  <script src="{{script}}"></script>
+  {{/each}}
+  {{#each links}}
+  <link rel="stylesheet" href="{{link}}" type="text/css" />
+  {{/each}}
+  {{!-- <link rel="stylesheet" href="css/style.css" type="text/css" /> --}}
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/user-info.js" type="text/javascript"></script>
