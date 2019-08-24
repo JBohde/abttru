@@ -14,17 +14,23 @@ module.exports = {
           password: userPassWord,
         },
       })
-      .then(patient => {
-        if (patient.length == 0) {
+      .then(results => {
+        if (results.length == 0) {
           res.redirect('/');
         } else {
+          const patient = results.shift();
+          const {
+            dataValues: { id },
+          } = patient;
           req.session.user_name = userName;
-          res.redirect('/profile');
+          res.redirect(`/profile/${id}`);
         }
       });
   },
 
   userDashboard: function(req, res) {
+    const scripts = [{ script: '/js/user-info.js' }];
+    const links = [{ link: '/css/style.css' }];
     db.patient.belongsTo(db.healthStats, {
       foreignKey: 'id',
       constraints: false,
@@ -36,7 +42,7 @@ module.exports = {
     // load all healthStats
     db.patient
       .findAll({
-        where: { patient_name: req.session.user_name },
+        where: { id: req.params.id },
         include: [{ model: db.healthStats }, { model: db.savedRecipes }],
       })
       .then(patient => {
@@ -44,33 +50,25 @@ module.exports = {
           patients: patient.map(x => x.dataValues),
           recipes: [],
           faveRecipe: [],
+          scripts,
+          links,
         };
-
         db.savedRecipes
           .findAll({
             where: { patient_id: patient.map(x => x.dataValues.id).toString() },
           })
           .then(savedRecipes => {
             hbsPatient.recipes = savedRecipes.map(x => x.dataValues);
+            // let recipeName = savedRecipes.map(x => x.dataValues.recipe_name);
+            // let recipeImg = savedRecipes.map(x => x.dataValues.recipe_img);
+            // let recipeUrl = savedRecipes.map(x => x.dataValues.recipe);
+            // let recipeUri = savedRecipes.map(x => x.dataValues.recipe_uri);
+            // let encodedUri = encodeURI(recipeUri[0]);
 
-            let recipeName = savedRecipes.map(x => x.dataValues.recipe_name);
-            // console.log(recipeName);
-            let recipeImg = savedRecipes.map(x => x.dataValues.recipe_img);
-            // console.log(recipeImg);
-            let recipeUrl = savedRecipes.map(x => x.dataValues.recipe);
-            // console.log(recipeUrl);
-            let recipeUri = savedRecipes.map(x => x.dataValues.recipe_uri);
-            // console.log(recipeUri);
-            // console.log(recipeUri[0].replace(/[#]/gi, '%23'));
-            // let formattedUri = recipeUri[0].replace(/[#]/gi, '%23', /[:]/gi, '%3A', /[/]/, '%2F');
-
-            // // res.json(savedRecipes);
-            // //NEED TO REPLACE # with %23!!//
-            // axios.get('https://api.edamam.com/search?r=' + formattedUri + '&app_id=76461587&app_key=b829a690de0595f2fa5b7cb02db4cd99')
+            // axios.get('https://api.edamam.com/search?r=' + encodedUri + '&app_id=76461587&app_key=b829a690de0595f2fa5b7cb02db4cd99')
             //     .then(response => {
-            //         // faveRecipe = response.data;
-            //         // console.log(faveRecipe);
-            //         // console.log(response.data.explanation);
+            //         faveRecipe = response.data;
+            //         console.log(faveRecipe)
             //     }).catch(error => {
             //         console.log(error);
             // });
@@ -102,7 +100,6 @@ module.exports = {
   },
 
   faveRecipe: function(req, res) {
-    // Save a recipe with the data available to us in req.body
     const {
       body: { id, favorite, recipe },
     } = req;

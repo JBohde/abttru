@@ -8,7 +8,7 @@ module.exports = function(app) {
 
   // ********* USER ROUTES ********** //
   app.post('/profile', controller.userLogin);
-  app.get('/profile', controller.userDashboard);
+  app.get('/profile/:id', controller.userDashboard);
   // ********** RECIPES ********** //
   app.post('/profile/save', controller.saveRecipe);
   app.put('/profile/fave', controller.faveRecipe);
@@ -18,7 +18,7 @@ module.exports = function(app) {
   app.post('/doctor', controller.doctorLogin);
   app.get('/doctor/form', controller.doctorDashboard);
   app.get('/patient/list', controller.getAllPatients);
-  app.get('/api/patient/:patient_name', controller.getOnePatient);
+  app.get('/api/patient/:id', controller.getOnePatient);
   app.post('/api/patient', controller.createPatient);
   app.delete('/api/patient/:id', controller.deletePatient);
 };
