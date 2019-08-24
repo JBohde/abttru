@@ -2,7 +2,7 @@ $(document).ready(function() {
   var currentURL = window.location.origin;
   let userQ;
 
-  $(document).on('click', '.search', function(event) {
+  $('.search').on('click', function(event) {
     $('.patient-form').hide();
     $('.doctor-form').hide();
     $('.please-login').hide();
@@ -26,7 +26,7 @@ $(document).ready(function() {
       createSlider(response);
     });
   });
-  $(document).on('change', '.login', function() {
+  $('.login').on('change', function() {
     login_option = $('#login')
       .val()
       .toLowerCase()

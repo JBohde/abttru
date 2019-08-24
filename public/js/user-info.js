@@ -7,6 +7,7 @@ var edamamKey = 'b829a690de0595f2fa5b7cb02db4cd99';
 var responseObject;
 var id;
 var nextSlide = 0;
+var currentPlot = $('#macros-container');
 var myModal = $('#login-modal');
 var isModalShowing = false;
 var image;
@@ -31,12 +32,12 @@ $('.search').on('click', function(event) {
           src: response.hits[i].recipe.image,
           value: response.hits[i].recipe.url,
           uri: response.hits[i].recipe.uri,
-          class: 'btn btn-primary ' + label,
+          class: 'btn btn-sm ' + label,
           'data-toggle': 'modal',
           'data-target': '#login-modal',
           role: 'button',
         });
-        button.text(label.toUpperCase() + ' THIS!');
+        button.text(label.toUpperCase());
         if (i < 1) {
           itemActive.append(button);
         } else {
@@ -62,6 +63,8 @@ $('.search').on('click', function(event) {
         href: response.hits[i].recipe.url,
         target: '_blank',
         role: 'button',
+        class: 'plotly-anchor',
+        position: 'absolute',
       });
       caption.text(response.hits[i].recipe.label);
       caption.css('color', 'black');
@@ -79,7 +82,7 @@ $('.search').on('click', function(event) {
 
       $('#item-list').append(itemDiv);
       $('.carousel').carousel('pause');
-      $('#panel-slider').show();
+      $('.recipe-area').show();
       id = 1;
       responseObject = response;
       createPlots(responseObject, i);
@@ -116,7 +119,7 @@ $('.search').on('click', function(event) {
         '<h2>' + 'This is now your favorite recipe!' + '</h2>';
       $('.modal-body').append(confirmFavorite);
       $.ajax({
-        url: 'profile/fave',
+        url: '/profile/fave',
         method: 'PUT',
         data: {
           favorite: true,
@@ -135,7 +138,7 @@ $('.change-favorite').on('click', function(event) {
     '<h2>' + 'This is now your favorite recipe!' + '</h2>';
   $('.modal-body').append(confirmNewFavorite);
   $.ajax({
-    url: 'profile/fave',
+    url: '/profile/fave',
     method: 'PUT',
     data: {
       favorite: true,
@@ -149,10 +152,10 @@ $('.delete-recipe').on('click', function(event) {
   event.preventDefault();
   uri = event.currentTarget.getAttribute('value');
   var id = this_id;
-  var itsDevared = '<h2>' + 'This recipe has been deleted' + '</h2>';
-  $('.modal-body').append(itsDevared);
+  var confirmDelete = '<h2>' + 'This recipe has been deleted' + '</h2>';
+  $('.modal-body').append(confirmDelete);
   $.ajax({
-    url: 'profile/delete',
+    url: '/profile/delete',
     method: 'DELETE',
     data: {
       id,
@@ -173,7 +176,7 @@ $('.close').on('click', function() {
   window.location.reload(false);
 });
 
-$('.right').on('click', function(event) {
+$('.right').on('click', function() {
   nextSlide++;
   if (nextSlide > 4) {
     nextSlide = 0;
@@ -182,13 +185,21 @@ $('.right').on('click', function(event) {
   createPlots(responseObject, nextSlide);
 });
 
-$('.left').on('click', function(event) {
+$('.left').on('click', function() {
   nextSlide--;
   if (nextSlide < 0) {
     nextSlide = 4;
     createPlots(responseObject, nextSlide);
   }
   createPlots(responseObject, nextSlide);
+});
+
+$('.plot-btn').on('click', function() {
+  const { id } = this;
+  const newPlot = $(`#${id}-container`);
+  currentPlot.hide();
+  currentPlot = newPlot;
+  currentPlot.show();
 });
 
 function createPlots(response, i) {
@@ -243,8 +254,6 @@ function createPlots(response, i) {
   ];
 
   digest.forEach((nutrient, i) => {
-    // console.log(nutrient.label, nutrient.unit);
-    // push nutrient servings for each nutrient
     if (
       nutrient.label === 'Fat' ||
       nutrient.label === 'Carbs' ||
@@ -269,13 +278,9 @@ function createPlots(response, i) {
 
     // }
     else if ((i > 3) & (i < 11)) {
-      // console.log(nutrient, i);
-      // console.log(digest.slice(1, 5));
       thirdPlot.values.push(nutrient.total / yield);
       thirdPlot.labels.push(nutrient.label);
     } else if ((i > 10) & (i < 24)) {
-      // console.log(nutrient, i);
-      // console.log(digest.slice(1, 5));
       fourthPlot.values.push(nutrient.total / yield);
       fourthPlot.labels.push(nutrient.label);
     }
@@ -292,66 +297,12 @@ function createPlots(response, i) {
     }
   }
   // populate the website with beautiful plots
-  var data = [
-    {
-      values: firstPlot.values,
-      labels: firstPlot.labels,
-      text: 'Macronutrients',
-      textposition: 'inside',
-      name: 'Macronutrients',
-      hoverinfo: 'label+percent+name',
-      domain: { row: 0, column: 0 },
-      hole: 0.6,
-      type: 'pie',
-      marker: {
-        colors: ultimateColors[0],
-      },
-    },
-    {
-      values: secondPlot.values,
-      labels: secondPlot.labels,
-      text: 'Fats',
-      textposition: 'inside',
-      name: 'Lipids',
-      hoverinfo: 'label+percent+name',
-      domain: { row: 0, column: 1 },
-      hole: 0.6,
-      type: 'pie',
-      marker: {
-        colors: ultimateColors[1],
-      },
-    },
-    {
-      values: thirdPlot.values,
-      labels: thirdPlot.labels,
-      text: 'Minerals',
-      textposition: 'inside',
-      name: 'Minerals',
-      hoverinfo: 'label+percent+name',
-      domain: { row: 1, column: 0 },
-      hole: 0.6,
-      type: 'pie',
-    },
-    {
-      values: fourthPlot.values,
-      labels: fourthPlot.labels,
-      text: 'Vitamins',
-      textposition: 'inside',
-      name: 'Vitamins',
-      hoverinfo: 'label+percent+name',
-      domain: { row: 1, column: 1 },
-      hole: 0.6,
-      type: 'pie',
-    },
-  ];
-
   var dataOne = [
     {
       values: firstPlot.values,
       labels: firstPlot.labels,
       name: 'Macronutrients',
       hoverinfo: 'label+percent+name',
-      domain: { row: 0, column: 0 },
       hole: 0.6,
       type: 'pie',
       marker: {
@@ -368,7 +319,6 @@ function createPlots(response, i) {
       textposition: 'inside',
       name: 'Lipids',
       hoverinfo: 'label+percent+name',
-      domain: { row: 0, column: 1 },
       hole: 0.6,
       type: 'pie',
       marker: {
@@ -384,7 +334,6 @@ function createPlots(response, i) {
       name: 'Minerals',
       textposition: 'inside',
       hoverinfo: 'label+percent+name',
-      domain: { row: 1, column: 0 },
       hole: 0.6,
       type: 'pie',
     },
@@ -398,79 +347,26 @@ function createPlots(response, i) {
       textposition: 'inside',
       name: 'Vitamins',
       hoverinfo: 'label+percent+name',
-      domain: { row: 1, column: 1 },
       hole: 0.6,
       type: 'pie',
     },
   ];
-
-  var layout = {
-    title: 'Nutrient Breakdown',
-    titlefont: {
-      size: 30,
-    },
-    grid: { rows: 2, columns: 2 },
-    paper_bgcolor: 'transparent',
-    plot_bgcolor: 'transparent',
-    annotations: [
-      {
-        font: {
-          size: 14,
-          color: 'white',
-        },
-        showarrow: false,
-        text: 'Minerals',
-        x: 0.15,
-        y: 0.8,
-      },
-      {
-        font: {
-          size: 14,
-          color: 'white',
-        },
-        showarrow: false,
-        text: 'Vitamins',
-        x: 0.85,
-        y: 0.8,
-      },
-      {
-        font: {
-          size: 14,
-          color: 'white',
-        },
-        showarrow: false,
-        text: 'Macros',
-        x: 0.15,
-        y: 0.2,
-      },
-      {
-        font: {
-          size: 14,
-          color: 'white',
-        },
-        showarrow: false,
-        text: 'Lipids',
-        x: 0.82,
-        y: 0.2,
-      },
-    ],
-    showlegend: false,
-    //plot_bgcolor='rgb(254, 247, 234, 0.2)'
-  };
 
   var layoutOne = {
     paper_bgcolor: 'transparent',
     plot_bgcolor: 'transparent',
     annotations: [
       {
-        font: { size: 14, color: 'white' },
+        font: { size: 18, color: '#749541' },
         showarrow: false,
-        text: 'Minerals',
-        x: 0,
-        y: 0,
+        text: 'Macros',
+        x: 0.5,
+        y: 0.5,
       },
     ],
     showlegend: false,
+    width: 375,
+    height: 400,
   };
 
   var layoutTwo = {
@@ -478,14 +374,16 @@ function createPlots(response, i) {
     plot_bgcolor: 'transparent',
     annotations: [
       {
-        font: { size: 14, color: 'white' },
+        font: { size: 18, color: '#749541' },
         showarrow: false,
-        text: 'Vitamins',
-        x: 0,
-        y: 0,
+        text: 'Fats',
+        x: 0.5,
+        y: 0.5,
       },
     ],
     showlegend: false,
+    width: 375,
+    height: 400,
   };
 
   var layoutThree = {
@@ -493,15 +391,17 @@ function createPlots(response, i) {
     plot_bgcolor: 'transparent',
     annotations: [
       {
-        font: { size: 14, color: 'white' },
+        font: { size: 18, color: '#749541' },
         showarrow: false,
-        text: 'Macros',
+        text: 'Minerals',
 
-        x: -20,
-        y: 20,
+        x: 0.5,
+        y: 0.5,
       },
     ],
     showlegend: false,
+    width: 375,
+    height: 400,
   };
 
   var layoutFour = {
@@ -509,20 +409,20 @@ function createPlots(response, i) {
     plot_bgcolor: 'transparent',
     annotations: [
       {
-        font: { size: 14, color: 'white' },
+        font: { size: 18, color: '#749541' },
         showarrow: false,
-        text: 'Lipids',
-        x: -10,
-        y: 10,
+        text: 'Vitamins',
+        x: 0.5,
+        y: 0.5,
       },
     ],
     showlegend: false,
+    width: 375,
+    height: 400,
   };
 
-  // Plotly.newPlot('tester', data, layout, { responsive: true });
-
-  Plotly.newPlot('tester-1', dataOne, layoutOne, { responsive: true });
-  Plotly.newPlot('tester-2', dataTwo, layoutTwo, { responsive: true });
-  Plotly.newPlot('tester-3', dataThree, layoutThree, { responsive: true });
-  Plotly.newPlot('tester-4', dataFour, layoutFour, { responsive: true });
+  Plotly.newPlot('macros-container', dataOne, layoutOne);
+  Plotly.newPlot('fats-container', dataTwo, layoutTwo);
+  Plotly.newPlot('minerals-container', dataThree, layoutThree);
+  Plotly.newPlot('vitamins-container', dataFour, layoutFour);
 }
