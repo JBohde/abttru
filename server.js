@@ -1,6 +1,7 @@
 const express = require('express');
+const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-
+const path = require('path');
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -8,7 +9,7 @@ const expressValidator = require('express-validator');
 var db = require('./models');
 const session = require('express-session');
 // Serve static content for the app from the "public" directory in the application directory.
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '/public')));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,9 +21,6 @@ app.use(expressValidator());
 app.use(
   session({ secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 } }),
 );
-
-// Set Handlebars.
-const exphbs = require('express-handlebars');
 
 app.engine(
   'handlebars',
