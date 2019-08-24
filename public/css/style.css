@@ -62,36 +62,6 @@ a {
   padding: 0;
 }
 
-/* #tester-1,
-#tester-2,
-#tester-3,
-#tester-4 {
-  width: 400px;
-  height: 300px;
-} */
-
-/* .ploty {
-  height: 750px;
-  width: 750px;
-}
-
-.svg-container {
-  background: rgba(44, 62, 79, 0.2);
-  border-collapse: collapse;
-  border: 1px solid #ddd;
-  font-weight: bolder;
-  font-size: 20px;
-}
-
-.svg-container {
-  width: 100% !important;
-  height: auto !important;
-} */
-
-/* #doctor-panel {
-  padding: 5;
-} */
-
 .patient-form {
   display: none;
 }
@@ -124,6 +94,42 @@ a {
   padding-bottom: 80px;
 }
 
+.search-results {
+  display: hidden;
+}
+
+.item,
+.active {
+  position: relative;
+}
+
+.plotly-anchor {
+  position: absolute;
+  text-decoration: none;
+  color: white !important;
+  text-overflow: ellipsis;
+  bottom: 50px;
+  left: 25px;
+}
+
+.plotlyjs-container {
+  position: relative;
+}
+
+.buttons-wrapper {
+  position: absolute;
+  z-index: 1;
+  left: 3em;
+}
+
+.donut-container {
+  display: none;
+}
+
+.plot-btn {
+  font-size: 0.75em;
+}
+
 .save,
 .fave {
   width: 50%;
@@ -131,16 +137,20 @@ a {
 
 .fave,
 .change-favorite {
+  border-color: #749541;
   background-color: #749541;
+  color: white;
+}
+
+.fave,
+.change-favorite:hover {
+  border-color: #324b1f;
+  background-color: #324b1f;
   color: white;
 }
 
 .recipe-card {
   margin-bottom: 15px;
-}
-
-.recipe-img {
-  max-width: 150px;
 }
 
 .recipe-name {
@@ -149,6 +159,10 @@ a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.recipe-img {
+  max-width: 150px;
 }
 
 .saved-recipe {
@@ -167,8 +181,11 @@ a {
   margin-bottom: 100px;
 }
 
-/* @media screen and (max-width: 400px) {
-  .plot-container {
-    height: 275px;
+@media screen and (max-width: 400) {
+  .item,
+  .active {
+    width: 215px;
+    height: auto;
+    margin: 0 auto;
   }
-} */
+}
