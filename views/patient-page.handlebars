@@ -24,7 +24,7 @@
           <input placeholder="Ingredients(e.g. chicken)" type="text"
             class="form-control" id="user-input">
         </div>
-        <button class="search btn btn-default">Search for Recipes</button>
+        <button class="patient-search btn btn-default">Search for Recipes</button>
       </form>
     </div>
   </div>
@@ -36,13 +36,17 @@
       <h1>USER INFO</h1>
       <div class="panel panel-default patient-info" style="overflow-x:auto;">
         <table style="width:100%">
+          <thead>
           <tr>
             <th>Name</th>
             <th>Risk</th>
             <th>Diet</th>
             <th>Restrictions</th>
           </tr>
+          </thead>
+          <tbody>
           {{#each patients}} {{> users/user-block}} {{/each}}
+          </tbody>
         </table>
       </div>
     </div>
@@ -154,5 +158,3 @@
   {{#each links}}
   <link rel="stylesheet" href="{{link}}" type="text/css" />
   {{/each}}
-  {{!-- <link rel="stylesheet" href="css/style.css" type="text/css" /> --}}
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>

@@ -1,9 +1,8 @@
 const db = require('../models');
 const axios = require('axios');
-let faveRecipe;
 
 module.exports = {
-  userLogin: function(req, res) {
+  userLogin: (req, res) => {
     const userName = req.body.patient_name;
     const userPassWord = req.body.password;
 
@@ -28,8 +27,11 @@ module.exports = {
       });
   },
 
-  userDashboard: function(req, res) {
-    const scripts = [{ script: '/js/user-info.js' }];
+  userDashboard: (req, res) => {
+    const scripts = [
+      { script: '/js/user-info.js' },
+      { script: 'https://cdn.plot.ly/plotly-latest.min.js' },
+    ];
     const links = [{ link: '/css/style.css' }];
     db.patient.belongsTo(db.healthStats, {
       foreignKey: 'id',
@@ -59,30 +61,47 @@ module.exports = {
           })
           .then(savedRecipes => {
             hbsPatient.recipes = savedRecipes.map(x => x.dataValues);
-            // let recipeName = savedRecipes.map(x => x.dataValues.recipe_name);
-            // let recipeImg = savedRecipes.map(x => x.dataValues.recipe_img);
-            // let recipeUrl = savedRecipes.map(x => x.dataValues.recipe);
-            // let recipeUri = savedRecipes.map(x => x.dataValues.recipe_uri);
-            // let encodedUri = encodeURI(recipeUri[0]);
-
-            // axios.get('https://api.edamam.com/search?r=' + encodedUri + '&app_id=76461587&app_key=b829a690de0595f2fa5b7cb02db4cd99')
-            //     .then(response => {
-            //         faveRecipe = response.data;
-            //         console.log(faveRecipe)
-            //     }).catch(error => {
-            //         console.log(error);
-            // });
           })
           .then(() => {
             res.render('patient-page', hbsPatient);
           });
       })
-      .catch(function(error) {
+      .catch(error => {
         res.send(error);
       });
   },
 
-  saveRecipe: function(req, res) {
+  getOneSaved: (req, res) => {
+    const {
+      params: { id },
+    } = req;
+    db.savedRecipes
+      .findOne({
+        where: { id },
+      })
+      .then(savedRecipe => {
+        const recipeUri = savedRecipe.dataValues.recipe_uri;
+        const encodedUri = encodeURI(recipeUri);
+        hbsPatient.recipes = savedRecipes.map(x => x.dataValues);
+        axios
+          .get(
+            'https://api.edamam.com/search?r=' +
+              encodedUri +
+              '&app_id=' +
+              process.env.EDAMAME_APP_ID +
+              '&app_key=' +
+              process.env.EDAMAME_API_KEY,
+          )
+          .then(response => {
+            console.log(response.data);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+
+  saveRecipe: (req, res) => {
     const {
       body: { id, recipe_name, recipe_img, recipe, recipe_uri },
     } = req;
@@ -94,43 +113,42 @@ module.exports = {
         recipe,
         recipe_uri,
       })
-      .then(function(savedRecipe) {
-        res.send(savedRecipe);
+      .then(newRecipe => {
+        if (req.body.favorite) {
+          return module.exports.faveRecipe(req, res);
+        }
+        res.send(newRecipe);
       });
   },
 
-  faveRecipe: function(req, res) {
+  faveRecipe: (req, res) => {
     const {
       body: { id, favorite, recipe },
     } = req;
     db.savedRecipes
-      .update(
-        { favorite: false },
-        {
-          where: {
-            favorite: true,
-            patient_id: id,
-          },
-        },
-      )
-      .then(function() {
-        db.savedRecipes
+      .findOne({
+        where: { patient_id: id, recipe },
+      })
+      .then(record => {
+        if (!record) {
+          return module.exports.saveRecipe(req, res);
+        }
+        return db.savedRecipes
           .update(
-            { favorite },
-            {
-              where: {
-                patient_id: id,
-                recipe,
-              },
-            },
+            { favorite: false },
+            { where: { favorite: true, patient_id: id } },
           )
-          .then(function(savedRecipe) {
-            res.send(savedRecipe);
+          .then(() => {
+            return db.savedRecipes
+              .update({ favorite }, { where: { patient_id: id, recipe } })
+              .then(newFavorite => {
+                return res.send(newFavorite);
+              });
           });
       });
   },
 
-  deleteRecipe: function(req, res) {
+  deleteRecipe: (req, res) => {
     return db.savedRecipes.destroy({
       where: {
         patient_id: req.body.id,
@@ -140,7 +158,7 @@ module.exports = {
   },
 
   // ******* DOCTOR ROUTES ******* //
-  doctorLogin: function(req, res) {
+  doctorLogin: (req, res) => {
     var doctorName = req.body.doctor_name;
     var password = req.body.password;
 
@@ -151,7 +169,7 @@ module.exports = {
           password: password,
         },
       })
-      .then(function(response) {
+      .then(response => {
         var doctorObj = response;
         if (doctorObj.length == 0) {
           res.redirect('/');
@@ -162,7 +180,7 @@ module.exports = {
       });
   },
 
-  doctorDashboard: function(req, res) {
+  doctorDashboard: (req, res) => {
     db.patient.belongsTo(db.healthStats, {
       foreignKey: 'id',
       constraints: false,
@@ -182,14 +200,14 @@ module.exports = {
       });
   },
 
-  getAllPatients: function(req, res) {
+  getAllPatients: (req, res) => {
     db.patient.findAll({}).then(patient => {
       hbsObj = { patients: patient.map(x => x.dataValues) };
       res.render('doctor-page', hbsObj);
     });
   },
 
-  getOnePatient: function(req, res) {
+  getOnePatient: (req, res) => {
     db.patient.belongsTo(db.healthStats, {
       foreignKey: 'id',
       constraints: false,
@@ -210,7 +228,7 @@ module.exports = {
       });
   },
 
-  createPatient: function(req, res) {
+  createPatient: (req, res) => {
     req.checkBody('patient_name', 'Username field cannot be empty.').notEmpty();
     req
       .checkBody(
@@ -255,7 +273,7 @@ module.exports = {
     }
   },
 
-  deletePatient: function(req, res) {
+  deletePatient: (req, res) => {
     db.patient
       .destroy({
         where: {

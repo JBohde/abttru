@@ -1,19 +1,11 @@
-{{!--
-<button class="change-status" data-id="{{id}}" data-newstatus="{{status}}">
-  {{#if status}}DEACTIVATE!{{else}}ACTIVATE!{{/if}}
-</button> --}}
-{{!--
-<link rel="stylesheet" href="/css/style.css" type="text/css" />
-<link rel="stylesheet" href="css/style.css" type="text/css" /> --}}
 <link rel="stylesheet" href="/css/style.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <tr>
-  <td>{{patient_name}}</td>
-  <td>{{healthStat.risk_factor}}</td>
-  <td>{{healthStat.diet_recommendation}}</td>
-  <td>{{healthStat.diet_restriction}}</td>
+  <td data-label="Patient Name">{{patient_name}}</td>
+  <td data-label="Risk Factor">{{healthStat.risk_factor}}</td>
+  <td data-label="Recommended Diet">{{healthStat.diet_recommendation}}</td>
+  <td data-label="Restrictions">{{healthStat.diet_restriction}}</td>
   <td>
-    <button name="button" class="delete-patient btn btn-danger"
-      data-patient-id="{{id}}">Delete Patient</button>
+    <button name="button" class="delete-patient btn btn-sm btn-danger" data-patient-id="{{id}}">Delete Patient</button>
   </td>
 </tr>

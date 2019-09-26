@@ -1,52 +1,53 @@
-var this_id = $('#1').data().value;
-var risk_factor = $('#2').data().value;
-var diet_recommendation = $('#3').data().value;
-var diet_restriction = $('#4').data().value;
-// var fave_recipe = $("#5").data().value;
-var edamamKey = 'b829a690de0595f2fa5b7cb02db4cd99';
-var responseObject;
-var id;
-var nextSlide = 0;
-var currentPlot = $('#macros-container');
-var myModal = $('#login-modal');
-var isModalShowing = false;
-var image;
-var caption;
+const this_id = $('#1').data().value;
+const risk_factor = $('#2').data().value;
+const diet_recommendation = $('#3').data().value;
+const diet_restriction = $('#4').data().value;
+const edamamKey = 'b829a690de0595f2fa5b7cb02db4cd99';
+const edamamId = '76461587';
+const myModal = $('#login-modal');
+let currentPlot = $('#macros-container');
+let responseObject;
+let nextSlide = 0;
+let isModalShowing = false;
+let itemActive;
+let itemDiv;
 
-$('.search').on('click', function(event) {
+$('.patient-search').on('click', function(event) {
   event.preventDefault();
   userQ = $('#user-input')
     .val()
     .trim();
   $.ajax({
-    url: `https://api.edamam.com/search?q=${userQ}&app_id=76461587&app_key=${edamamKey}&from=0&to=5&calories=591-722&Diet=${risk_factor}&Health=${diet_recommendation}`,
+    url: `https://api.edamam.com/search?q=${userQ}&app_id=${edamamId}&app_key=${edamamKey}&from=0&to=5&calories=591-722&Diet=${risk_factor}&Health=${diet_recommendation}`,
     method: 'GET',
   }).done(function(response) {
     responseObject = response;
 
     for (var i = 0; i < response.hits.length; i++) {
-      function makeButton(i, label) {
-        button = $('<button>');
-        button.attr({
-          name: response.hits[i].recipe.label,
-          src: response.hits[i].recipe.image,
-          value: response.hits[i].recipe.url,
-          uri: response.hits[i].recipe.uri,
-          class: 'btn btn-sm ' + label,
-          'data-toggle': 'modal',
-          'data-target': '#login-modal',
-          role: 'button',
+      function makeButtons(i, ...labels) {
+        labels.forEach(label => {
+          button = $('<button>');
+          button.attr({
+            name: response.hits[i].recipe.label,
+            src: response.hits[i].recipe.image,
+            value: response.hits[i].recipe.url,
+            uri: response.hits[i].recipe.uri,
+            class: 'btn btn-sm ' + label,
+            'data-toggle': 'modal',
+            'data-target': '#login-modal',
+            role: 'button',
+          });
+          button.text(label.toUpperCase());
+          if (i < 1) {
+            itemActive.append(button);
+          } else {
+            itemDiv.append(button);
+          }
         });
-        button.text(label.toUpperCase());
-        if (i < 1) {
-          itemActive.append(button);
-        } else {
-          itemDiv.append(button);
-        }
       }
 
-      var itemActive = $('#item-active');
-      var itemDiv = $("<div class='col-md-4 recipe'>").attr({
+      itemActive = $('#item-active');
+      itemDiv = $("<div class='col-md-4 recipe'>").attr({
         class: 'item',
         'data-id': i,
       });
@@ -71,14 +72,12 @@ $('.search').on('click', function(event) {
 
       if (i < 1) {
         itemActive.append(caption, image);
-        makeButton(i, 'save');
-        makeButton(i, 'fave');
+        makeButtons(i, 'save', 'fave');
         continue;
       }
 
       itemDiv.append(caption, image);
-      makeButton(i, 'save');
-      makeButton(i, 'fave');
+      makeButtons(i, 'save', 'fave');
 
       $('#item-list').append(itemDiv);
       $('.carousel').carousel('pause');
@@ -100,7 +99,7 @@ $('.search').on('click', function(event) {
         url: '/profile/save',
         method: 'POST',
         data: {
-          id: id,
+          id,
           recipe_name: name,
           recipe_img: src,
           recipe,
@@ -110,7 +109,7 @@ $('.search').on('click', function(event) {
     });
 
     $('.fave').on('click', function(event) {
-      name = event.currentTarget.id;
+      name = event.currentTarget.name;
       src = event.currentTarget.getAttribute('src');
       recipe = event.currentTarget.getAttribute('value');
       uri = event.currentTarget.getAttribute('uri');
@@ -124,7 +123,10 @@ $('.search').on('click', function(event) {
         data: {
           favorite: true,
           id,
+          recipe_name: name,
+          recipe_img: src,
           recipe,
+          recipe_uri: uri,
         },
       });
     });
@@ -134,6 +136,7 @@ $('.search').on('click', function(event) {
 $('.change-favorite').on('click', function(event) {
   recipe = event.currentTarget.getAttribute('value');
   var id = this_id;
+  console.log('THIS ID', id);
   var confirmNewFavorite =
     '<h2>' + 'This is now your favorite recipe!' + '</h2>';
   $('.modal-body').append(confirmNewFavorite);
@@ -268,16 +271,7 @@ function createPlots(response, i) {
           secondPlot.labels.push(fat.label);
         });
       }
-    }
-
-    // else if (nutrient.label != "Cholesterol" & nutrient.label != "Folate equivalent (total)" & nutrient.label != "Folate (food)") {
-    //     console.log(nutrient);
-    //     console.log(digest.slice(1, 5));
-    //     thirdPlot.values.push(nutrient.daily / yield);
-    //     thirdPlot.labels.push(nutrient.label);
-
-    // }
-    else if ((i > 3) & (i < 11)) {
+    } else if ((i > 3) & (i < 11)) {
       thirdPlot.values.push(nutrient.total / yield);
       thirdPlot.labels.push(nutrient.label);
     } else if ((i > 10) & (i < 24)) {
@@ -365,7 +359,7 @@ function createPlots(response, i) {
       },
     ],
     showlegend: false,
-    width: 375,
+    width: 350,
     height: 400,
   };
 
@@ -382,7 +376,7 @@ function createPlots(response, i) {
       },
     ],
     showlegend: false,
-    width: 375,
+    width: 350,
     height: 400,
   };
 
@@ -400,7 +394,7 @@ function createPlots(response, i) {
       },
     ],
     showlegend: false,
-    width: 375,
+    width: 350,
     height: 400,
   };
 
@@ -417,7 +411,7 @@ function createPlots(response, i) {
       },
     ],
     showlegend: false,
-    width: 375,
+    width: 350,
     height: 400,
   };
 

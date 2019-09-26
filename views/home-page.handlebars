@@ -4,7 +4,8 @@
     <div class="navbar-header">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+          data-target="#bs-example-navbar-collapse-1">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -16,7 +17,8 @@
       </div>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse navbar-right"
+      id="bs-example-navbar-collapse-1">
 
       <ul class="nav navbar-nav">
         <li class="dropdown-select">
@@ -54,7 +56,8 @@
       </ul>
       <form class="navbar-form navbar-right">
         <div class="form-group">
-          <input placeholder="Ingredients(e.g. chicken)" type="text" class="form-control" id="user-input">
+          <input placeholder="Ingredients(e.g. chicken)" type="text"
+            class="form-control" id="user-input">
         </div>
         {{!--
         <button type="submit" class="btn btn-default">Submit</button> --}}
@@ -66,7 +69,7 @@
   <!-- /.container-fluid -->
 </nav>
 <div class="container">
-  {{!-- <div class="col-md-6 panel panel-default error-info">
+  <div class="col-md-6 panel panel-default error-info">
     {{#if errors}}
     <div class="alert alert-danger">
       {{#each errors}} {{> errors/error-block}} {{/each}}
@@ -75,7 +78,7 @@
       <input type="submit" class="alert alert-danger" value="RETURN TO FORM">
     </form>
     {{/if}}
-  </div> --}}
+  </div>
   <div class="row">
     <div class="col-md-12">
       <h1>WELCOME TO A BETTER YOU!</h1>
@@ -90,7 +93,8 @@
           <h4>Please Select A Login Option</h1>
         </div>
         <div class="col-md-6">
-          <select class="form-control form-control-lg login" id="login" name="login">
+          <select class="form-control form-control-lg login" id="login"
+            name="login">
             <option class="login-potion"></option>
             <option class="login-option">Patient</option>
             <option class="login-option">Dietitian</option>
@@ -107,18 +111,21 @@
         <div class="form-group row patient-form">
           <label for="inputUserName" class="col-sm-2 col-form-label">Name</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputUsername" placeholder="Patient Name" name="patient_name">
+            <input type="text" class="form-control" id="inputUsername"
+              placeholder="Patient Name" name="patient_name">
           </div>
         </div>
         <div class="form-group row">
           <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
           <div class="col-sm-10">
-            <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
+            <input type="password" class="form-control" id="inputPassword"
+              placeholder="Password" name="password">
           </div>
         </div>
         <div class="form-group row">
           <div class="offset-sm-2 col-sm-10">
-            <button type="submit" class="patient btn btn-primary" value="Submit">Sign in</button>
+            <button type="submit" class="patient btn btn-primary"
+              value="Submit">Sign in</button>
           </div>
         </div>
       </form>
@@ -128,13 +135,15 @@
         <div class="form-group row">
           <label for="inputUserName" class="col-sm-2 col-form-label">Name</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="doctor-name" placeholder="Dietitian Name" name="doctor_name">
+            <input type="text" class="form-control" id="doctor-name"
+              placeholder="Dietitian Name" name="doctor_name">
           </div>
         </div>
         <div class="form-group row">
           <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
           <div class="col-sm-10">
-            <input type="password" class="form-control" id="doctor-password" placeholder="Password" name="password">
+            <input type="password" class="form-control" id="doctor-password"
+              placeholder="Password" name="password">
           </div>
         </div>
         <div class="form-group row">
@@ -153,7 +162,8 @@
     <div class="panel panel-default" style="display:none" id="panel-slider">
       <div class="panel-body">
         <!-- Where the carousel goes -->
-        <div id="sliders" class="slide carousel" data-ride="carousel" data-pause="true">
+        <div id="sliders" class="slide carousel" data-ride="carousel"
+          data-pause="true">
           <!-- Carousel slides -->
           <div id="carousel" class="carousel carousel-inner">
             <ol class='carousel-indicators'>
@@ -173,8 +183,8 @@
               Slide">
               <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
-            <!-- <i id="pause" class="fa fa-pause" title="Pause"></i>
-                            <i id="play" class="fa fa-play" title="Play"></i> -->
+            {{!-- <i id="pause" class="fa fa-pause" title="Pause"></i>
+            <i id="play" class="fa fa-play" title="Play"></i> --}}
             <a class="right" href="#sliders" data-slide="next" title="Next
               Slide">
               <span class="glyphicon glyphicon-chevron-right"></span>

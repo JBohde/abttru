@@ -8,6 +8,7 @@ const app = express();
 const expressValidator = require('express-validator');
 var db = require('./models');
 const session = require('express-session');
+
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static(path.join(__dirname, '/public')));
 

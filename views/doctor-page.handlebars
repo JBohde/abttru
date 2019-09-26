@@ -20,16 +20,19 @@
 <h1>PATIENT LIST</h1>
 <div class="row">
   <div class="col-xs-1 col-sm-1 col-md-2"></div>
-  <div class="col-xs-10 col-sm-10 col-md-8 panel panel-default patient-info" style="overflow-x:auto;">
+  <div class="col-xs-10 col-sm-10 col-md-8 panel panel-default patient-info">
     <table style="width:100%">
-      <tr>
-        <th>Patient Name</th>
-        <th>Risk Factor</th>
-        <th>Diet Recommendation</th>
-        <th>Allergies/Restrictions</th>
-        <th></th>
-      </tr>
-      {{#each patients}} {{> doctors/patient-block}} {{/each}}
+      <thead>
+        <tr>
+          <th>Patient Name</th>
+          <th>Risk Factor</th>
+          <th>Diet Recommendation</th>
+          <th>Allergies/Restrictions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each patients}} {{> doctors/patient-block}} {{/each}}
+      </tbody>
     </table>
   </div>
   <div class="col-xs-1 col-sm-1 col-md-2"></div>
@@ -143,4 +146,5 @@
     </div>
     <!-- /.container-fluid -->
   </nav>
-</footer><script src="/js/patient-manager.js" type="text/javascript"></script>
+</footer>
+<script src="/js/patient-manager.js" type="text/javascript"></script>

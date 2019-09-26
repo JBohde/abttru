@@ -3,7 +3,7 @@
 INSERT INTO patients
     (patient_name, user_name, password)
 VALUES
-    ('John Doe', 'JohnDoe', 'password');
+    ('Joshua Bohde', 'JoshBohde', 'password');
 INSERT INTO healthStats
     (patient_id, diet_recommendation, risk_factor, diet_restriction)
 VALUES
