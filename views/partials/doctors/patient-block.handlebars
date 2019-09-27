@@ -1,10 +1,18 @@
 <link rel="stylesheet" href="/css/style.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <tr>
-  <td data-label="Patient Name">{{patient_name}}</td>
-  <td data-label="Risk Factor">{{healthStat.risk_factor}}</td>
-  <td data-label="Recommended Diet">{{healthStat.diet_recommendation}}</td>
-  <td data-label="Restrictions">{{healthStat.diet_restriction}}</td>
+  <td data-label="Patient Name" data-value={{id}}>
+    {{patient_name}}
+  </td>
+  <td data-label="Risk Factor" data-value={{healthStat.risk_factor}}>
+    {{healthStat.risk_factor}}
+  </td>
+  <td data-label="Recommended Diet" data-value={{healthStat.diet_recommendation}}>
+    {{healthStat.diet_recommendation}}
+  </td>
+  <td data-label="Restrictions" data-value={{healthStat.diet_restriction}}>
+    {{healthStat.diet_restriction}}
+  </td>
   <td>
     <button name="button" class="delete-patient btn btn-sm btn-danger" data-patient-id="{{id}}">Delete Patient</button>
   </td>

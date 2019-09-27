@@ -229,4 +229,8 @@ a {
   table td:last-child {
     border-bottom: 0;
   }
+
+  table tr:last-child {
+    margin-bottom: 0;
+  }
 }
