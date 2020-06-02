@@ -16,7 +16,6 @@
 {{!-- <div class="container"> --}}
 <div class="row">
 </div>
-{{#if errors}} {{#each errors}} {{this.msg}} {{/each}} {{/if}}
 <h1>PATIENT LIST</h1>
 <div class="row">
   <div class="col-xs-1 col-sm-1 col-md-2"></div>
@@ -41,15 +40,10 @@
 {{!-- </div> --}}
 <div class="row">
   <div class="col-md-2"></div>
-  <div class="col-md-8 panel panel-default error-info">
-    {{#if errors}} {{#each errors}} {{> errors/error-block}} {{/each}} {{/if}}
+  <div class="col-md-8">
     {{#if errors}}
-    <div class="alert alert-danger">
-      {{#each errors}} {{> errors/error-block}} {{/each}}
-    </div>
-    <form action="/doctor/form" method="get">
-      <input type="submit" class="alert alert-danger" value="RETURN TO FORM">
-    </form>
+    {{> errors/error-block}}
+    <a class="btn btn-secondary" href="/doctor/form">Return to form</a>
     {{/if}}
   </div>
   <div class="col-md-2"></div>
@@ -117,10 +111,9 @@
     </form>
   </div>
   <div class='col-xs-1 col-sm-1 col-md-2'></div>
-  {{!--
-<div class="col-md-6 panel panel-default error-info">
+  <div class="col-md-6 panel panel-default error-info">
     {{#if errors}} {{#each errors}} {{> errors/error-block}} {{/each}} {{/if}}
-</div> --}}
+  </div>
 </div>
 <div class="row">
   <div class="col-md-12 col-lg-12">

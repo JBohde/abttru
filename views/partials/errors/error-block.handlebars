@@ -1,1 +1,5 @@
-<p>{{this.msg}}</p>
+{{#each errors}}
+<div class="alert alert-danger" role="alert">
+  {{this.msg}}
+</div>
+{{/each}}
