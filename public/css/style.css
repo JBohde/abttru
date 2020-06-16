@@ -1,7 +1,7 @@
 html {
   position: relative;
   height: auto;
-  min-height: 100% !important;
+  min-height: 100vh;
 }
 
 body {
@@ -9,8 +9,10 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+  overflow-x: hidden;
+  /* background: #EBE1D6; */
   height: auto;
-  min-height: 100% !important;
+  min-height: 100vh;
 }
 
 table {
@@ -60,10 +62,6 @@ a {
   font-size: 20px;
   background: rgba(44, 62, 79, 0.2);
   padding: 0;
-}
-
-.patient-form {
-  display: none;
 }
 
 .doctor-form {
@@ -116,19 +114,18 @@ a {
   position: relative;
 }
 
-.buttons-wrapper {
-  position: absolute;
-  z-index: 1;
-  top: 1em;
-  left: 3.25em;
-}
-
 .donut-container {
   display: none;
 }
 
+.buttons-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .plot-btn {
-  font-size: 0.75em;
+  font-size: 1.1rem;
+  width: 8rem;
 }
 
 .save,
@@ -205,13 +202,13 @@ a {
   table tr {
     border-bottom: 3px solid #ddd;
     display: block;
-    margin-bottom: .625em;
+    margin-bottom: 0.625em;
   }
 
   table td {
     border-bottom: 1px solid #ddd;
     display: block;
-    font-size: .8em;
+    font-size: 0.8em;
     text-align: right;
   }
 
