@@ -1,170 +1,138 @@
+// const axios = require('axios');
 const db = require('../models');
-const axios = require('axios');
-const passport = require("../config/passport");
+// const passport = require('../config/auth/passport');
+
+// const appId = process.env.EDAMAME_APP_ID;
+// const appKey = process.env.EDAMAME_API_KEY;
 
 module.exports = {
-  passportLogin: () => {
-    passport.authenticate("local"),(req, res) => {
-      // res.json(req.user);
-      const patient = res.shift();
-      const { dataValues: { id } } = patient;
-      req.session.user_name = userName;
-      res.redirect(`/profile/${id}`);
-    }
-  },
+  // passportLogin: () => (passport.authenticate('local'), (req, res) => {
+  //   const patient = res.shift();
+  //   const { dataValues: { id } } = patient;
+  //   req.session.isAuthenticated = true;
+  //   res.redirect(`/profile/${id}`);
+  // }),
 
   userLogin: (req, res) => {
-    const userName = req.body.patient_name;
-    const userPassWord = req.body.password;
+    const { body: { email, password } } = req;
+    return db.Patient.findOne({ where: { email } }).then(user => {
+      if (!user) {
+        res.redirect('/');
+      } else {
+        user.validatePassword(password, (err, isMatch) => {
+          if (isMatch) {
+            const { dataValues: { id } } = user;
 
-    db.patient
-      .findAll({
-        where: {
-          patient_name: userName,
-          password: userPassWord,
-        },
-      })
-      .then(results => {
-        if (results.length == 0) {
-          res.redirect('/');
-        } else {
-          const patient = results.shift();
-          const { dataValues: { id } } = patient;
-          req.session.user_name = userName;
-          res.redirect(`/profile/${id}`);
-        }
-      });
+            req.session.isLoggedIn = true;
+            res.redirect(`/profile/${id}`);
+          } else {
+            res.status(403).json(err);
+          }
+        });
+      }
+    }).catch(err => console.error(err));
   },
 
   userDashboard: (req, res) => {
     const scripts = [
-      { script: '/js/user-info.js' },
+      { script: '/js/userInfo.js' },
       { script: 'https://cdn.plot.ly/plotly-latest.min.js' },
     ];
     const links = [{ link: '/css/style.css' }];
-    db.patient.belongsTo(db.healthStats, {
-      foreignKey: 'id',
-      constraints: false,
-    });
-    db.patient.belongsTo(db.savedRecipes, {
-      foreignKey: 'id',
-      constraints: false,
-    });
-    // load all healthStats
-    db.patient
-      .findAll({
-        where: { id: req.params.id },
-        include: [{ model: db.healthStats }, { model: db.savedRecipes }],
-      })
+
+    return db.Patient.findOne({
+      attributes: ['id', 'firstName', 'lastName', 'email'],
+      where: { id: req.params.id },
+      include: [
+        { model: db.Statistics, as: 'statistics' },
+        { model: db.Recipes, as: 'recipes' },
+      ],
+    })
       .then(patient => {
-        let hbsPatient = {
-          patients: patient.map(x => x.dataValues),
-          recipes: [],
+        const hbsPatient = {
+          ...patient.dataValues,
+          ...patient.statistics.dataValues,
+          recipes: patient.recipes.map(recipe => (recipe.dataValues)),
           faveRecipe: [],
           scripts,
           links,
         };
-        db.savedRecipes
-          .findAll({
-            where: { patient_id: patient.map(x => x.dataValues.id).toString() },
-          })
-          .then(savedRecipes => {
-            hbsPatient.recipes = savedRecipes.map(x => x.dataValues);
-          })
-          .then(() => {
-            res.render('patient', hbsPatient);
-          });
+
+        res.render('patient', hbsPatient);
       })
       .catch(error => {
         res.send(error);
       });
   },
 
-  getOneSaved: (req, res) => {
-    const {
-      params: { id },
-    } = req;
-    db.savedRecipes
-      .findOne({
-        where: { id },
-      })
-      .then(savedRecipe => {
-        const recipeUri = savedRecipe.dataValues.recipe_uri;
-        const encodedUri = encodeURI(recipeUri);
-        hbsPatient.recipes = savedRecipes.map(x => x.dataValues);
-        axios
-          .get(
-            'https://api.edamam.com/search?r=' +
-              encodedUri +
-              '&app_id=' +
-              process.env.EDAMAME_APP_ID +
-              '&app_key=' +
-              process.env.EDAMAME_API_KEY,
-          )
-          .then(response => {
-            console.log(response.data);
-          });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  },
+  // getOneSaved: (req, res) => {
+  //   const { params: { id } } = req;
+  //   db.Recipes.findOne({ where: { id } })
+  //     .then(recipe => {
+  //       const recipeUri = recipe.dataValues.recipe_uri;
+  //       const encodedUri = encodeURI(recipeUri);
+  //       hbsPatient.recipes = db.Recipes.map(x => x.dataValues);
+  //       axios
+  //         .get(
+  //           `https://api.edamam.com/search?r='${encodedUri}&app_id=${appId}&app_key=${appKey}`
+  //         )
+  //         .then(response => {
+  //           console.log(response.data);
+  //         });
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // },
 
   saveRecipe: (req, res) => {
     const {
-      body: { id, recipe_name, recipe_img, recipe, recipe_uri },
-    } = req;
-    db.savedRecipes
-      .create({
-        patient_id: id,
-        recipe_name,
-        recipe_img,
+      body: {
+        patientId,
+        recipeName,
+        recipeImg,
         recipe,
-        recipe_uri,
-      })
-      .then(newRecipe => {
-        if (req.body.favorite) {
-          return module.exports.faveRecipe(req, res);
-        }
-        res.send(newRecipe);
-      });
+        recipeUri,
+      },
+    } = req;
+    db.Recipes.create({
+      patientId,
+      recipeName,
+      recipeImg,
+      recipe,
+      recipeUri,
+    }).then(newRecipe => {
+      if (req.body.favorite) {
+        return module.exports.faveRecipe(req, res);
+      }
+      return res.send(newRecipe);
+    });
   },
 
   faveRecipe: (req, res) => {
-    const {
-      body: { id, favorite, recipe },
-    } = req;
-    db.savedRecipes
-      .findOne({
-        where: { patient_id: id, recipe },
-      })
+    const { body: { id, favorite, recipe } } = req;
+    return db.Recipes.findOne({ where: { patientId: id, recipe } })
       .then(record => {
         if (!record) {
           return module.exports.saveRecipe(req, res);
         }
-        return db.savedRecipes
-          .update(
-            { favorite: false },
-            { where: { favorite: true, patient_id: id } },
-          )
-          .then(() => {
-            return db.savedRecipes
-              .update({ favorite }, { where: { patient_id: id, recipe } })
-              .then(newFavorite => {
-                return res.send(newFavorite);
-              });
-          });
+        return db.Recipes.update(
+          { favorite: false },
+          { where: { favorite: true, patientId: id } }
+        ).then(() => db.Recipes.update(
+          { favorite },
+          { where: { patientId: id, recipe } }
+        ).then(newFavorite => res.send(newFavorite)));
       });
   },
 
-  deleteRecipe: (req, res) => {
-    return db.savedRecipes.destroy({
+  deleteRecipe: req => {
+    const { body: { id, uri } } = req;
+    return db.Recipes.destroy({
       where: {
-        patient_id: req.body.id,
-        recipe_uri: req.body.uri,
+        patientId: id,
+        recipeUri: uri,
       },
     });
   },
-
-
 };
