@@ -1,39 +1,69 @@
-module.exports = function(sequelize, DataTypes) {
-  var doctor = sequelize.define('doctor', {
+const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcryptjs');
+
+module.exports = (sequelize, DataTypes) => {
+  const Doctor = sequelize.define('Doctor', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    patient_id: {
+    firstName: {
+      field: 'first_name',
       type: DataTypes.STRING,
     },
-    doctor_name: {
+    lastName: {
+      field: 'last_name',
       type: DataTypes.STRING,
     },
-    user_name: {
+    email: {
       type: DataTypes.STRING,
     },
     password: {
       type: DataTypes.STRING,
     },
     createdAt: {
+      field: 'created_at',
       type: DataTypes.DATE,
     },
     updatedAt: {
+      field: 'updated_at',
       type: DataTypes.DATE,
     },
   });
 
-    // Creating a custom method for our User model. This will check if an unhashed password entered by the user can be compared to the hashed password stored in our database
-    doctor.prototype.validPassword = function(password) {
-      return bcrypt.compareSync(password, this.password);
-    };
-    // Hooks are automatic methods that run during various phases of the patient Model lifecycle
-    // In this case, before a User is created, we will automatically hash their password
-    doctor.addHook("beforeCreate", function(user) {
-      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
-    });
+  Doctor.beforeCreate(doctor => {
+    const dbDoctor = doctor;
+    dbDoctor.id = uuidv4();
+    return dbDoctor;
+  });
 
-  return doctor;
+  // Hooks are automatic methods that run during various phases of the patient Model lifecycle
+  // In this case, before a User is created, we will automatically hash their password
+  Doctor.beforeCreate(user => {
+    // eslint-disable-next-line no-param-reassign
+    user.password = bcrypt.hashSync(
+      user.password,
+      bcrypt.genSaltSync(10),
+      null
+    );
+  });
+
+  // Creating a custom method for our User model.
+  // This will check if an unhashed password entered by the user
+  //  can be compared to the hashed password stored in our database
+  Doctor.prototype.validatePassword = function (password, cb) {
+    bcrypt.compare(password, this.password, (err, isMatch) => {
+      if (err) {
+        return cb(err);
+      }
+      return cb(null, isMatch);
+    });
+  };
+
+  Doctor.associate = models => {
+    Doctor.hasMany(models.Patient, { as: 'patients', foreignKey: 'doctorId' });
+  };
+
+  return Doctor;
 };

@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-  const Recipes = sequelize.define('Recipes', {
+  const Statistics = sequelize.define('Statistics', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -13,24 +13,17 @@ module.exports = function (sequelize, DataTypes) {
         key: 'id',
       },
     },
-    recipeName: {
-      field: 'recipe_name',
+    riskFactor: {
+      field: 'risk_factor',
       type: DataTypes.STRING,
     },
-    recipeImg: {
-      field: 'recipe_img',
+    dietRecommendation: {
+      field: 'diet_recommendation',
       type: DataTypes.STRING,
     },
-    recipe: {
+    dietRestriction: {
+      field: 'diet_restriction',
       type: DataTypes.STRING,
-    },
-    recipeUri: {
-      field: 'recipe_uri',
-      type: DataTypes.STRING,
-    },
-    favorite: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
     },
     createdAt: {
       field: 'created_at',
@@ -42,13 +35,13 @@ module.exports = function (sequelize, DataTypes) {
     },
   });
 
-  Recipes.associate = models => {
-    Recipes.belongsTo(models.Patient, {
+  Statistics.associate = models => {
+    Statistics.belongsTo(models.Patient, {
       as: 'patient',
       foreignKey: 'patientId',
       targetKey: 'id',
     });
   };
 
-  return Recipes;
+  return Statistics;
 };
