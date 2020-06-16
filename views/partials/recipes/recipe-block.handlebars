@@ -1,12 +1,11 @@
-{{#each recipes}}
 <div class="col-sm-6 col-md-4 recipe-card">
   <div class="thumbnail">
     <a href="{{this.recipe}}" target="_blank">
-      <img src="{{this.recipe_img}}" alt="recipe-image">
+      <img src="{{this.recipeImg}}" alt="recipe-image">
     </a>
   </div>
   <div class="caption">
-    <h3 class="recipe-name">{{this.recipe_name}}</h3>
+    <h3 class="recipe-name">{{this.recipeName}}</h3>
   </div>
   <a href="{{this.recipe}}" target="_blank">
     <button
@@ -26,10 +25,9 @@
   <button
     class="btn btn-danger delete-recipe"
     data-id="{{this.id}}"
-    value={{this.recipe_uri}}
+    value={{this.recipeUri}}
     data-toggle="modal"
     data-target="#login-modal">
     DELETE RECIPE
   </button>
 </div>
-{{/each}}

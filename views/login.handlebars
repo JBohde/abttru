@@ -10,7 +10,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a href="/home">
+        <a href="/">
           <img src="css/ABetterYou.png" id="brand-logo">
         </a>
       </div>
@@ -91,7 +91,6 @@
         </div>
         <div class="col-md-6">
           <select class="form-control form-control-lg login" id="login" name="login">
-            <option class="login-option"></option>
             <option class="login-option">Patient</option>
             <option class="login-option">Dietitian</option>
           </select>
@@ -105,9 +104,9 @@
     <div class="col-md-6 patient-form">
       <form action="/profile" method="post">
         <div class="form-group row patient-form">
-          <label for="inputUserName" class="col-sm-2 col-form-label">Name</label>
+          <label for="user-email" class="col-sm-2 col-form-label">Email</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputUsername" placeholder="Patient Name" name="patient_name">
+            <input type="text" class="form-control" id="user-email" placeholder="Email" name="email">
           </div>
         </div>
         <div class="form-group row">
@@ -118,7 +117,7 @@
         </div>
         <div class="form-group row">
           <div class="offset-sm-2 col-sm-10">
-            <button type="submit" class="patient btn btn-primary" value="Submit">Sign in</button>
+            <button type="submit" class="patient btn btn-primary" value="Submit">Sign In</button>
           </div>
         </div>
       </form>
@@ -126,9 +125,9 @@
     <div class="col-md-6 doctor-form">
       <form action="/doctor" method="post">
         <div class="form-group row">
-          <label for="inputUserName" class="col-sm-2 col-form-label">Name</label>
+          <label for="doctor-email" class="col-sm-2 col-form-label">Email</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="doctor-name" placeholder="Dietitian Name" name="doctor_name">
+            <input type="text" class="form-control" id="doctor-email" placeholder="Email" name="email">
           </div>
         </div>
         <div class="form-group row">
@@ -139,8 +138,7 @@
         </div>
         <div class="form-group row">
           <div class="offset-sm-2 col-sm-10">
-            <button type="submit" class="doctor btn btn-primary" value="Submit">Sign
-              in</button>
+            <button type="submit" class="doctor btn btn-primary" value="Submit">Sign In</button>
           </div>
         </div>
       </form>
@@ -194,7 +192,7 @@
       <div class="navbar-footer">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-footer">
-          <a href="/home">
+          <a href="/">
             <img src="css/ABetterYou.png" id="footer-logo">
           </a>
         </div>
