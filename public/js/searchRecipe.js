@@ -1,9 +1,61 @@
-$(document).ready(function() {
-  var currentURL = window.location.origin;
+$(document).ready(() => {
   let userQ;
 
-  $('.search').on('click', function(event) {
-    $('.patient-form').hide();
+  function createSlider(response) {
+    const itemActive = $('#item-active');
+
+    const activeImg = $('<img>').attr({
+      src: response.hits[0].recipe.image,
+      'data-id': 0,
+      class: 'img-responsive',
+    });
+
+    const activeCaption = $('<a>');
+    activeCaption.attr({
+      href: response.hits[0].recipe.url,
+      target: '_blank',
+      /*        "class": "btn btn-info", */
+      role: 'button',
+    });
+    activeCaption.text(response.hits[0].recipe.label);
+    activeCaption.css('color', 'black');
+
+    itemActive.append(activeCaption);
+    itemActive.append(activeImg);
+
+    $('.carousel').carousel('pause');
+    $('#panel-slider').show();
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 1; i < response.hits.length; i++) {
+      const itemDiv = $('<div>').attr({
+        class: 'item',
+        'data-id': i,
+      });
+
+      const itemImg = $('<img>').attr({
+        src: response.hits[i].recipe.image,
+        id: `image${i}`,
+        class: 'img-responsive',
+      });
+
+      const itemCaption = $('<a>');
+      itemCaption.attr({
+        href: response.hits[i].recipe.url,
+        target: '_blank',
+        role: 'button',
+      });
+      itemCaption.text(response.hits[i].recipe.label);
+      itemCaption.css('color', 'black');
+
+      itemDiv.append(itemCaption);
+      itemDiv.append(itemImg);
+
+      $('#item-list').append(itemDiv);
+    }
+  }
+
+  $('.search').on('click', event => {
     $('.doctor-form').hide();
     $('.please-login').hide();
     event.preventDefault();
@@ -11,96 +63,33 @@ $(document).ready(function() {
       .val()
       .trim();
     // risk_factor = $("#risk-factor").val().toLowerCase().trim();
-    diet_option = $('#diet-factor')
+    const dietFactor = $('#diet-factor')
       .val()
       .toLowerCase()
       .trim();
-    diet_restriction = $('#diet-restriction')
+    const dietRestriction = $('#diet-restriction')
       .val()
       .toLowerCase()
       .trim();
     $.ajax({
-      url: `https://api.edamam.com/search?q=${userQ}&app_id=76461587&app_key=b829a690de0595f2fa5b7cb02db4cd99&from=0&to=5&diet=${diet_option}&health=${diet_restriction}`,
+      url: `https://api.edamam.com/search?q=${userQ}&app_id=76461587&app_key=b829a690de0595f2fa5b7cb02db4cd99&from=0&to=5&diet=${dietFactor}&health=${dietRestriction}`,
       method: 'GET',
-    }).done(function(response) {
+    }).done(response => {
       createSlider(response);
     });
   });
-  $('.login').on('change', function() {
-    login_option = $('#login')
+
+  $('.login').on('change', () => {
+    const loginSelector = $('#login')
       .val()
       .toLowerCase()
       .trim();
-    if (login_option === 'patient') {
+    if (loginSelector === 'patient') {
       $('.patient-form').show();
       $('.doctor-form').hide();
-    } else if (login_option === 'dietitian') {
+    } else if (loginSelector === 'dietitian') {
       $('.patient-form').hide();
       $('.doctor-form').show();
-    } else {
-      $('.patient-form').hide();
-      $('.doctor-form').hide();
     }
   });
 });
-
-function createSlider(response) {
-  // we create indicators - we will target this
-  // in the for loop with <li> items
-  let itemActive = $('#item-active');
-
-  var activeImg = $('<img>').attr({
-    src: response.hits[0].recipe.image,
-    'data-id': 0,
-    class: 'img-responsive',
-  });
-
-  var activeCaption = $(`<a>`);
-  activeCaption.attr({
-    href: response.hits[0].recipe.url,
-    target: '_blank',
-    /*        "class": "btn btn-info", */
-    role: 'button',
-  });
-  activeCaption.text(response.hits[0].recipe.label);
-  activeCaption.css('color', 'black');
-
-  // let activeImg = $("<img src = 'response.hits[0].recipe.image' alt = 'recipe'>");
-  itemActive.append(activeCaption);
-  itemActive.append(activeImg);
-
-  $('.carousel').carousel('pause');
-  $('#panel-slider').show();
-
-  id = 1;
-
-  // populate our slider with text content
-
-  for (let i = 1; i < response.hits.length; i++) {
-    let itemDiv = $('<div>').attr({
-      class: 'item',
-      'data-id': i,
-    });
-
-    var itemImg = $('<img>').attr({
-      src: response.hits[i].recipe.image,
-      id: 'image' + i,
-      class: 'img-responsive',
-    });
-
-    var itemCaption = $(`<a>`);
-    itemCaption.attr({
-      href: response.hits[i].recipe.url,
-      target: '_blank',
-      /* "class": "btn btn-info", */
-      role: 'button',
-    });
-    itemCaption.text(response.hits[i].recipe.label);
-    itemCaption.css('color', 'black');
-
-    itemDiv.append(itemCaption);
-    itemDiv.append(itemImg);
-
-    $('#item-list').append(itemDiv);
-  }
-}
