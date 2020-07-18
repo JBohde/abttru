@@ -1,18 +1,35 @@
+
+
 html {
-  position: relative;
-  height: auto;
-  min-height: 100vh;
+  margin: 0;
+  height: 100%;
 }
 
 body {
-  background-image: url('test.jpg');
-  background-repeat: no-repeat;
+  font-family: 'Source Sans Pro', sans-serif;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-image: url('cutting-board-2.png');
+  background-repeat: round;
   background-size: cover;
-  position: relative;
+  background: #EBE1D6;
   overflow-x: hidden;
-  /* background: #EBE1D6; */
-  height: auto;
-  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Libre Baskerville', serif;
+}
+
+nav {
+  background-color: #2c3f51;
+  color: #eeeeee;
+}
+
+main {
+  flex-grow: 1;
+  padding: 2rem 0;
 }
 
 table {
@@ -41,6 +58,7 @@ a {
   color: whitesmoke;
 }
 
+
 .dropdown-select {
   padding: 5px 5px 0px 20px;
   /* padding-bottom: 19.5px; */
@@ -49,9 +67,10 @@ a {
   padding: 5px 20px 5px 20px;
 }
 
-#brand-logo {
-  height: 61px;
-  width: 120px;
+.brand-logo {
+  height: 50px;
+  width: 100px;
+  border-radius: 0.35rem;
 }
 
 .container-fluid {
@@ -73,20 +92,28 @@ a {
   padding: 10px;
 }
 
+.login-wrapper {
+  background: #8fb854;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: .25rem;
+}
+
+.login-btn {
+  background: #2c3f51;
+  border: 1px solid #2c3f51;
+}
+
+.login-btn:hover {
+  background: #4F7292;
+  border: 1px solid #2c3f51;
+}
+
 #copyright {
   color: whitesmoke;
   text-align: right;
 }
 
-#footer-logo {
-  float: right;
-  height: 61px;
-  width: 120px;
-}
-
-.footer-place {
-  padding-right: 0;
-}
 
 .patient-container {
   padding-bottom: 80px;
@@ -94,6 +121,12 @@ a {
 
 .search-results {
   display: hidden;
+}
+
+#sliders {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .item,
@@ -104,14 +137,23 @@ a {
 .plotly-anchor {
   position: absolute;
   text-decoration: none;
-  color: white !important;
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 2px 2px 4px #000000;
   text-overflow: ellipsis;
-  bottom: 50px;
-  left: 25px;
+  bottom: 20%;
+  left: 20%;
+}
+
+.plotly-anchor:hover {
+  color: white;
+  text-decoration: underline;
 }
 
 .plotlyjs-container {
   position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 .donut-container {
@@ -119,28 +161,42 @@ a {
 }
 
 .buttons-wrapper {
+  width: 100%;
+  position: absolute;
+  top: 1.5rem;
   display: flex;
-  justify-content: space-evenly;
 }
 
 .plot-btn {
-  font-size: 1.1rem;
-  width: 8rem;
-}
-
-.save,
-.fave {
-  width: 50%;
-}
-
-.fave,
-.change-favorite {
+  font-size: 1rem;
+  width: 5.75rem;
+  margin-right: 0.25rem;
   border-color: #749541;
   background-color: #749541;
   color: white;
 }
 
+.fave {
+    position: absolute;
+    bottom: 5%;
+    right: 20%;
+}
+
+.save {
+  position: absolute;
+  bottom: 5%;
+  left: 20%;
+}
+
+.save,
 .fave,
+.change-favorite {
+  border-color: #749541;
+  background-color: #749541;
+  color: white;
+  z-index: 5;
+}
+
 .change-favorite:hover {
   border-color: #324b1f;
   background-color: #324b1f;
@@ -160,7 +216,9 @@ a {
 }
 
 .recipe-img {
-  max-width: 150px;
+  display: flex;
+  margin: 0 auto;
+  border-radius: 0.5rem;
 }
 
 .saved-recipe {
@@ -173,10 +231,6 @@ a {
 .delete-recipe {
   margin: 2px;
   width: 100%;
-}
-
-.bottom {
-  margin-bottom: 100px;
 }
 
 @media screen and (max-width: 600px) {
@@ -205,6 +259,11 @@ a {
     margin-bottom: 0.625em;
   }
 
+  table tr:last-child {
+    margin-bottom: 0;
+    border-bottom: 1.5px solid #ddd;
+  }
+
   table td {
     border-bottom: 1px solid #ddd;
     display: block;
@@ -225,9 +284,5 @@ a {
 
   table td:last-child {
     border-bottom: 0;
-  }
-
-  table tr:last-child {
-    margin-bottom: 0;
   }
 }
