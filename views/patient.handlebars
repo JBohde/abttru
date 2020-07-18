@@ -1,42 +1,7 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a href="/">
-          <img src="/css/ABetterYou.png" id="brand-logo">
-        </a>
-      </div>
-    </div>
-    <!-- /.navbar-collapse -->
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-      <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input placeholder="Ingredients(e.g. chicken)" type="text" class="form-control" id="user-input">
-        </div>
-        <button
-          class="patient-search btn btn-default"
-          data-risk={{riskFactor}}
-          data-recommendation={{{dietRecommendation}}}
-          data-restriction={{{dietRestriction}}}>
-          Search for Recipes
-        </button>
-      </form>
-    </div>
-  </div>
-  <!-- /.container-fluid -->
-</nav>
-<div class="container">
+<div class="container flex-fill">
   <div class="row">
-    <div class="col-xs-12">
-      <h1>USER INFO</h1>
+    <div class="col-12 mb-5">
+      <h1>User Info</h1>
       <div class="panel panel-default patient-info" style="overflow-x:auto;">
         <table style="width:100%">
           <thead>
@@ -54,52 +19,62 @@
       </div>
     </div>
   </div>
-  <div class="row recipe-area" style='display:none'>
-    <div class="col-xs-0 col-sm-2"></div>
-    <div class="col-xs-12 col-sm-4">
-      <div id="panel-slider" class="panel panel-default">
-        <div class="panel-body">
-          <div id="sliders" data-ride="carousel" data-pause="true">
-              <div class="carousel-inner" role="listbox"></div>
-            <div id="controls">
-              <a class="left" href="#sliders" data-slide="prev" title="Previous
-                Slide">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-              </a>
-              <i id="pause" class="fa fa-pause" title="Pause"></i>
-              <i id="play" class="fa fa-play" title="Play"></i>
-              <a class="right" href="#sliders" data-slide="next" title="Next
-                Slide">
-                <span class="glyphicon glyphicon-chevron-right"></span>
-              </a>
+  <div class="row">
+    <div class='col-12 col-sm-10 offset-sm-1'>
+      <h2>New Recipes</h2>
+      <div>
+        <form>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <input placeholder="Ingredients(e.g. chicken)" type="text" class="form-control" id="user-input">
+              <div class="input-group-append">
+                <span>
+                  <button type="submit" class="patient-search btn btn-success" data-risk={{riskFactor}}
+                    data-recommendation={{{dietRecommendation}}} data-restriction={{{dietRestriction}}}>
+                    <i class="fas fa-search"></i>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-4 plotlyjs-container">
+  </div>
+  <div class="row recipe-area" style='display:none'>
+    <div class="col-12 col-sm-6 col-md-5 offset-md-1 mb-5">
+      <div id="sliders" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner"></div>
+        <a class="carousel-control-prev left" href="#sliders" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next right" href="#sliders" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 plotlyjs-container">
       <div class='buttons-wrapper'>
-        <button id="macros" class="btn btn-default btn-sm plot-btn">MACROS</button>
-        <button id="fats" class="btn btn-default btn-sm plot-btn">FATS</button>
-        <button id="minerals" class="btn btn-default btn-sm plot-btn">MINERALS</button>
-        <button id="vitamins" class="btn btn-default btn-sm plot-btn">VITAMINS</button>
+        <button id="macros" class="btn btn-sm plot-btn">MACROS</button>
+        <button id="fats" class="btn btn-sm plot-btn">FATS</button>
+        <button id="minerals" class="btn btn-sm plot-btn">MINERALS</button>
+        <button id="vitamins" class="btn btn-sm plot-btn">VITAMINS</button>
       </div>
       <div id="macros-container" class="donut-container-active"></div>
       <div id="fats-container" class="donut-container"></div>
       <div id="minerals-container" class="donut-container"></div>
       <div id="vitamins-container" class="donut-container"></div>
     </div>
-    <div class="col-xs-0 col-sm-2 col-md-2 col-lg-2"></div>
   </div>
   <div class="row">
-    <div class="col-xs-0 col-sm-0 col-md-1 col-lg-1"></div>
-    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-      <h1>RECIPE BOX</h1>
-      <div class="patient-info">
+    <div class="col-12 col-sm-10 offset-sm-1">
+      <h2>Recipe Box</h2>
+      <div class="row">
         {{#each recipes}} {{> recipes/recipe-block}} {{/each}}
       </div>
     </div>
-    <div class="col-xs-0 col-sm-0 col-md-1 col-lg-1"></div>
   </div>
 </div>
 <!-- Modal -->
@@ -108,7 +83,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <img src="/css/ABetterYou.png" id="brand-logo">
+        <img src="/css/abetteryou.png" class="brand-logo">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h2 class="modal-title">
           A BETTER YOU
@@ -122,28 +97,9 @@
     </div>
   </div>
 </div>
-<div class="bottom">
-  <footer id="footer">
-    <nav class="navbar navbar-default navbar-fixed-bottom">
-      <div class="container-fluid footer-place">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-footer">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-footer">
-            <a href="/">
-              <img src="/css/ABetterYou.png" id="footer-logo">
-            </a>
-          </div>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <!-- /.navbar-collapse -->
-      </div>
-      <!-- /.container-fluid -->
-    </nav>
-  </footer>
-  {{#each scripts}}
-  <script src="{{script}}"></script>
-  {{/each}}
-  {{#each links}}
-  <link rel="stylesheet" href="{{link}}" type="text/css" />
-  {{/each}}
+{{#each scripts}}
+<script src="{{script}}"></script>
+{{/each}}
+{{#each links}}
+<link rel="stylesheet" href="{{link}}" type="text/css" />
+{{/each}}
