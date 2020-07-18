@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const expressValidator = require('express-validator');
 
-var db = require('./models');
 const session = require('express-session');
-var passport = require("./config/auth/passport");
+const db = require('./models');
+const passport = require('./config/auth/passport');
 
 const PORT = process.env.PORT || 8080;
 
@@ -35,6 +35,7 @@ app.set('view engine', 'handlebars');
 
 // Import routes and give the server access to them.
 const routes = require('./routes')(app);
+
 app.use(express.static('/login', routes));
 
 app.get('/', (req, res) => {
@@ -42,12 +43,12 @@ app.get('/', (req, res) => {
 });
 
 // Start our server so that it can begin listening to client requests.
-db.sequelize.sync().then(function() {
-  app.listen(PORT, function() {
+db.sequelize.sync().then(() => {
+  app.listen(PORT, function () {
     console.log(
       'Express server listening on port %d in %s mode',
       this.address().port,
-      app.settings.env,
+      app.settings.env
     );
   });
 });

@@ -35,8 +35,9 @@ module.exports = {
 
   userDashboard: (req, res) => {
     const scripts = [
-      { script: '/js/userInfo.js' },
       { script: 'https://cdn.plot.ly/plotly-latest.min.js' },
+      { script: '/js/plotly.js' },
+      { script: '/js/userInfo.js' },
     ];
     const links = [{ link: '/css/style.css' }];
 

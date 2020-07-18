@@ -3,10 +3,9 @@ const db = require('../models');
 
 module.exports = {
   doctorLogin: (req, res) => {
-    const {
-      body: { email, password },
-    } = req;
+    const { body: { email, password } } = req;
     db.Doctor.findOne({ where: { email } }).then(doctor => {
+      console.log(doctor);
       if (!doctor) {
         res.redirect('/');
       } else {
