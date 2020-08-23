@@ -38,13 +38,11 @@ const routes = require('./routes')(app);
 
 app.use(express.static('/login', routes));
 
-app.get('/', (req, res) => {
-  res.redirect('/login');
-});
-
 // Start our server so that it can begin listening to client requests.
 db.sequelize.sync().then(() => {
+  // eslint-disable-next-line func-names
   app.listen(PORT, function () {
+    // eslint-disable-next-line no-console
     console.log(
       'Express server listening on port %d in %s mode',
       this.address().port,

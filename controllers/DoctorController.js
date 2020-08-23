@@ -66,10 +66,11 @@ module.exports = {
   },
 
   getAllPatients: (req, res) => {
-    db.Patient.findAll({}).then(patient => {
-      const hbsObj = { patients: patient.map(x => x.dataValues) };
-      res.render('doctor', hbsObj);
-    });
+    db.Patient.findAll({})
+      .then(patient => {
+        const hbsObj = { patients: patient.map(x => x.dataValues) };
+        res.render('doctor', hbsObj);
+      });
   },
 
   getOnePatient: (req, res) => {
@@ -84,18 +85,16 @@ module.exports = {
   },
 
   createPatient: (req, res) => {
-    // req.checkBody('firstName', 'First name field cannot be empty.').notEmpty();
-    // req
-    //   .checkBody(
-    //     'patient_name',
-    //     'Username must be between 4-15 characters long.'
-    //   )
-    //   .len(4, 15);
-    // const errors = req.validationErrors();
+    req.body('firstName', 'First name field cannot be empty.').notEmpty();
+    req.body(
+      'patient_name',
+      'Username must be between 4-15 characters long.'
+    ).len(4, 15);
+    const errors = req.validationErrors();
 
-    // if (errors) {
-    //   return res.render('doctor', { errors });
-    // }
+    if (errors) {
+      return res.render('doctor', { errors });
+    }
     const {
       body: {
         firstName,

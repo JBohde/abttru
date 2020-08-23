@@ -1,39 +1,23 @@
-// const axios = require('axios');
-const db = require('../models');
-// const passport = require('../config/auth/passport');
+const axios = require('axios');
 
-// const appId = process.env.EDAMAME_APP_ID;
-// const appKey = process.env.EDAMAME_API_KEY;
+const { Patient, Recipes, Statistics } = require('../models');
+
+const appId = process.env.EDAMAME_APP_ID;
+const appKey = process.env.EDAMAME_API_KEY;
 
 module.exports = {
-  // passportLogin: () => (passport.authenticate('local'), (req, res) => {
-  //   const patient = res.shift();
-  //   const { dataValues: { id } } = patient;
-  //   req.session.isAuthenticated = true;
-  //   res.redirect(`/profile/${id}`);
-  // }),
-
-  userLogin: (req, res) => {
-    const { body: { email, password } } = req;
-    return db.Patient.findOne({ where: { email } }).then(user => {
-      if (!user) {
-        res.redirect('/');
-      } else {
-        user.validatePassword(password, (err, isMatch) => {
-          if (isMatch) {
-            const { dataValues: { id } } = user;
-
-            req.session.isLoggedIn = true;
-            res.redirect(`/profile/${id}`);
-          } else {
-            res.status(403).json(err);
-          }
-        });
-      }
-    }).catch(err => console.error(err));
+  login(req, res) {
+    const { dataValues: { id } } = req.user;
+    req.session.isAuthenticated = true;
+    res.redirect(`/profile/${id}`);
   },
 
-  userDashboard: (req, res) => {
+  logout: (req, res) => {
+    req.logout();
+    res.redirect('/');
+  },
+
+  userDashboard(req, res) {
     const scripts = [
       { script: 'https://cdn.plot.ly/plotly-latest.min.js' },
       { script: '/js/plotly.js' },
@@ -41,12 +25,12 @@ module.exports = {
     ];
     const links = [{ link: '/css/style.css' }];
 
-    return db.Patient.findOne({
+    return Patient.findOne({
       attributes: ['id', 'firstName', 'lastName', 'email'],
       where: { id: req.params.id },
       include: [
-        { model: db.Statistics, as: 'statistics' },
-        { model: db.Recipes, as: 'recipes' },
+        { model: Statistics, as: 'statistics' },
+        { model: Recipes, as: 'recipes' },
       ],
     })
       .then(patient => {
@@ -66,27 +50,26 @@ module.exports = {
       });
   },
 
-  // getOneSaved: (req, res) => {
-  //   const { params: { id } } = req;
-  //   db.Recipes.findOne({ where: { id } })
-  //     .then(recipe => {
-  //       const recipeUri = recipe.dataValues.recipe_uri;
-  //       const encodedUri = encodeURI(recipeUri);
-  //       hbsPatient.recipes = db.Recipes.map(x => x.dataValues);
-  //       axios
-  //         .get(
-  //           `https://api.edamam.com/search?r='${encodedUri}&app_id=${appId}&app_key=${appKey}`
-  //         )
-  //         .then(response => {
-  //           console.log(response.data);
-  //         });
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // },
+  getOneSaved(req, res) {
+    const { params: { id } } = req;
+    Recipes.findOne({ where: { id } })
+      .then(recipe => {
+        const recipeUri = recipe.dataValues.recipe_uri;
+        const encodedUri = encodeURI(recipeUri);
+        axios
+          .get(
+            `https://api.edamam.com/search?r='${encodedUri}&app_id=${appId}&app_key=${appKey}`
+          )
+          .then(response => {
+            console.log(response.data);
+          });
+      })
+      .catch(error => {
+        res.send(error);
+      });
+  },
 
-  saveRecipe: (req, res) => {
+  saveRecipe(req, res) {
     const {
       body: {
         patientId,
@@ -96,7 +79,7 @@ module.exports = {
         recipeUri,
       },
     } = req;
-    db.Recipes.create({
+    Recipes.create({
       patientId,
       recipeName,
       recipeImg,
@@ -110,26 +93,26 @@ module.exports = {
     });
   },
 
-  faveRecipe: (req, res) => {
-    const { body: { id, favorite, recipe } } = req;
-    return db.Recipes.findOne({ where: { patientId: id, recipe } })
+  faveRecipe(req, res) {
+    const { body: { patientId, favorite, recipe } } = req;
+    return Recipes.findOne({ where: { patientId, recipe } })
       .then(record => {
         if (!record) {
           return module.exports.saveRecipe(req, res);
         }
-        return db.Recipes.update(
+        return Recipes.update(
           { favorite: false },
           { where: { favorite: true, patientId: id } }
-        ).then(() => db.Recipes.update(
+        ).then(() => Recipes.update(
           { favorite },
           { where: { patientId: id, recipe } }
         ).then(newFavorite => res.send(newFavorite)));
       });
   },
 
-  deleteRecipe: req => {
+  deleteRecipe(req) {
     const { body: { id, uri } } = req;
-    return db.Recipes.destroy({
+    return Recipes.destroy({
       where: {
         patientId: id,
         recipeUri: uri,

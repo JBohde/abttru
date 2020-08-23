@@ -18,9 +18,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true
+      }
     },
     password: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     doctorId: {
       field: 'doctor_id',
@@ -60,14 +66,8 @@ module.exports = (sequelize, DataTypes) => {
   // Creating a custom method for our User model.
   // This will check if an unhashed password entered by the user
   // can be compared to the hashed password stored in our database
-  Patient.prototype.validatePassword = function (password, cb) {
-    bcrypt.compare(password, this.password, (err, isMatch) => {
-      if (err) {
-        return cb(err);
-      }
-      return cb(null, isMatch);
-    });
-  };
+  Patient.prototype.validatePassword = (password, userPassword) => bcrypt
+    .compare(password, userPassword);
 
   Patient.associate = models => {
     Patient.belongsTo(models.Doctor, {

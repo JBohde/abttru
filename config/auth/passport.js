@@ -7,16 +7,10 @@ const db = require('../../models');
 // In other words, we want login with a username/email and password
 passport.use(new LocalStrategy(
   // Our user will sign in using an email, rather than a "username"
-  {
-    usernameField: 'email',
-  },
+  { usernameField: 'email' },
   ((email, password, done) => {
     // When a user tries to sign in this code runs
-    db.patient.findOne({
-      where: {
-        email,
-      },
-    }).then((dbUser) => {
+    db.Patient.findOne({ where: { email } }).then(dbUser => {
       // If there's no user with the given email
       if (!dbUser) {
         return done(null, false, {
@@ -24,7 +18,7 @@ passport.use(new LocalStrategy(
         });
       }
       // If there is a user with the given email, but the password the user gives us is incorrect
-      if (!dbUser.validPassword(password)) {
+      if (!dbUser.validatePassword(password, dbUser.password)) {
         return done(null, false, {
           message: 'Incorrect password.',
         });
@@ -32,7 +26,7 @@ passport.use(new LocalStrategy(
       // If none of the above, return the user
       return done(null, dbUser);
     });
-  }),
+  })
 ));
 
 // In order to help keep authentication state across HTTP requests,
