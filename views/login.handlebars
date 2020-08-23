@@ -17,58 +17,8 @@
       </div>
     </div>
     <div class="row mb-5">
-      <div class="col-md-6">
-      </div>
-      <div class="col-md-6">
-        <select class="custom-select login" id="login" name="login">
-          <option value="" disabled selected hidden>Select login option</option>
-          <option class="login-option">Patient</option>
-          <option class="login-option">Dietitian</option>
-        </select>
-        <div class='login-wrapper'>
-        <form class='patient-form' action="/profile" method="post">
-          <div class="form-group">
-            <label for="user-email" class="col-form-label">Email</label>
-            <input type="text" class="form-control" id="user-email" placeholder="Email" name="email">
-          </div>
-          <div class="form-group">
-            <label for="inputPassword" class="col-form-label">Password</label>
-            <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
-          </div>
-          <button type="submit" class="btn btn-primary login-btn" value="Submit">Sign In</button>
-        </form>
-        <form class='doctor-form' action="/doctor" method="post">
-          <div class="form-group">
-            <label for="doctor-email" class="col-form-label">Email</label>
-            <input type="text" class="form-control" id="doctor-email" placeholder="Email" name="email">
-          </div>
-          <div class="form-group">
-            <label for="inputPassword" class="col-form-label">Password</label>
-            <input type="password" class="form-control" id="doctor-password" placeholder="Password" name="password">
-          </div>
-          <button type="submit" class="btn btn-primary login-btn" value="Submit">Sign In</button>
-        </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 col-sm-4 offset-sm-1">
-      <div class='recipe-area' style='display:none'>
-      <div id="sliders" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner"></div>
-        <a class="carousel-control-prev left" href="#sliders" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next right" href="#sliders" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-sm-4 offset-sm-1">
+            <div class="col-md-6">
+      <div class="search-wrapper">
       <form>
         <div class="form-group">
           <div class="input-group mb-3">
@@ -105,6 +55,59 @@
         {{!-- <option class="restrict-option">Paleo</option> --}}
         {{!-- <option class="restrict-option">Pescatarian</option> --}}
       </select>
+      </div>
+      </div>
+      <div class="col-md-6">
+        <div class='login-wrapper'>
+          <select class="custom-select login" id="login" name="login">
+            <option value="" disabled selected hidden>Select login option</option>
+            <option class="login-option">Patient</option>
+            <option class="login-option">Dietitian</option>
+          </select>
+          <form class='patient-form' action="/profile" method="post">
+            <div class="form-group">
+              <label for="user-email" class="col-form-label">Email</label>
+              <input type="text" class="form-control" id="user-email" placeholder="Email" name="email">
+            </div>
+            <div class="form-group">
+              <label for="user-password" class="col-form-label">Password</label>
+              <input type="password" class="form-control" id="user-password" placeholder="Password" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary login-btn" value="Submit">Sign In</button>
+          </form>
+          <form class='doctor-form' action="/doctor" method="post">
+            <div class="form-group">
+              <label for="doctor-email" class="col-form-label">Email</label>
+              <input type="text" class="form-control" id="doctor-email" placeholder="Email" name="email">
+            </div>
+            <div class="form-group">
+              <label for="doctor-password" class="col-form-label">Password</label>
+              <input type="password" class="form-control" id="doctor-password" placeholder="Password" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary login-btn" value="Submit">Sign In</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-sm-4 offset-sm-1">
+      <div class='recipe-area' style='visibility:hidden'>
+        <div id="sliders" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner"></div>
+          <a class="carousel-control-prev left" href="#sliders" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next right" href="#sliders" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-4 offset-sm-1">
+
     </div>
   </div>
 </main>

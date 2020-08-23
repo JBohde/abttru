@@ -35,7 +35,7 @@ $(document).ready(() => {
       $('.carousel-item').first().addClass('active');
       $('.carousel-inner').append(itemDiv);
       $('.carousel').carousel('pause');
-      $('.recipe-area').show();
+      $('.recipe-area').css('visibility', 'visible');
     });
   }
 
@@ -51,6 +51,7 @@ $(document).ready(() => {
       url: `https://api.edamam.com/search?q=${userQ}&app_id=76461587&app_key=b829a690de0595f2fa5b7cb02db4cd99&from=0&to=5&diet=${dietFactor}&health=${dietRestriction}`,
       method: 'GET',
     }).done(response => {
+      $('.carousel-inner').empty();
       createSlider(response);
     });
   });

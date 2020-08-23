@@ -1,3 +1,4 @@
+<div>{{> nav/nav-block }}</div>
 <div class="container flex-fill">
   <div class="row">
     <div class="col-12 mb-5">
@@ -29,8 +30,13 @@
               <input placeholder="Ingredients(e.g. chicken)" type="text" class="form-control" id="user-input">
               <div class="input-group-append">
                 <span>
-                  <button type="submit" class="patient-search btn btn-success" data-risk={{riskFactor}}
-                    data-recommendation={{{dietRecommendation}}} data-restriction={{{dietRestriction}}}>
+                  <button
+                  type="submit"
+                  class="patient-search btn btn-success"
+                  data-risk={{riskFactor}}
+                  data-recommendation={{{dietRecommendation}}}
+                  data-restriction={{{dietRestriction}}}
+                  >
                     <i class="fas fa-search"></i>
                   </button>
                 </span>
